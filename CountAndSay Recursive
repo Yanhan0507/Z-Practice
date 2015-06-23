@@ -14,8 +14,7 @@ public class Solution {
 	public String countAndSay(int n) { 
 		return helper(1, n, "1");
 	}
-	
-	
+
 	public String helper(int index, int target, String result){
 		if(index == target){
 			return result;
