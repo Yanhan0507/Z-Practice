@@ -1,0 +1,60 @@
+/*
+	A message containing letters from A-Z is being encoded to numbers using the following mapping:
+	
+	'A' -> 1
+	'B' -> 2
+	...
+	'Z' -> 26
+	Given an encoded message containing digits, determine the total number of ways to decode it.
+	
+	For example,
+	Given encoded message "12", it could be decoded as "AB" (1 2) or "L" (12).
+	
+	The number of ways decoding "12" is 2.
+	"0" is 0
+	"100" is 0
+*/
+	
+// Loop invariant: M[i] = M[i-1]*(s.charAt(i) != '0') + M[i-2]* (1=<s.substring(i-1,i+1)<=26)
+
+
+
+public class Solution {
+    public int numDecodings(String s) {
+        if(s.length() == 0){     				
+        	return 0;
+        }
+        int[] M = new int[s.length()];    // M[i] stands for the number of 
+                                          // decoding ways from position 0 to position i (s.substring(0,i+1)
+        								                  // base cases: M[0] and M[1]
+        if(isValid("" + s.charAt(0))){
+        	M[0] = 1;
+        }
+        if(s.length() == 1){
+        	return M[0];
+        }
+        if(isValid("" + s.charAt(1))){
+        	M[1] += M[0];
+        }
+        if(isValid(s.substring(0,2))){
+        	M[1] ++;
+        }
+        for(int i=2; i<s.length(); i++){
+        	if(isValid(s.charAt(i) + "")){
+        		M[i] += M[i-1];
+        	}
+        	if(isValid(s.substring(i-1, i+1))){
+        		M[i] += M[i-2];
+        	}
+        }
+        return M[s.length() - 1];
+    }
+    
+    public boolean isValid(String s){
+    	if(s.charAt(0) == '0'){
+    		return false;
+    	}
+    	return Integer.valueOf(s) <=26 && Integer.valueOf(s) >= 1;
+    }
+    
+}
