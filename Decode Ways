@@ -26,7 +26,7 @@ public class Solution {
         }
         int[] M = new int[s.length()];    // M[i] stands for the number of 
                                           // decoding ways from position 0 to position i (s.substring(0,i+1)
-        								                  // base cases: M[0] and M[1]
+        				  // base cases: M[0] and M[1]
         if(isValid("" + s.charAt(0))){
         	M[0] = 1;
         }
