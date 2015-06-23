@@ -1,0 +1,44 @@
+// the main difference between iterative and recursive, is that the former one is bottom up and later one is actually top down
+// thus, the base cases for iterative are M[0] and M[1] and for recursive is M[n] and M[n-1] (last time computation)
+// also, the corner case for iterative method is if i-1>0 and i-2>0, 
+// while for recursion, the corner case is whether i+1<=length, and i+2<=length
+
+public class Solution {
+    public int numDecodings(String s) {
+    	List<String> result = new ArrayList<String>();
+    	helper(0, new StringBuilder(), s, result);
+    	System.out.println(result);
+    	return result.size();
+    }
+    
+    public void helper(int index, StringBuilder sb, String s, List<String> result){
+    	if(s.length() == 0){
+    		return;
+    	}
+    	if(index == s.length()){
+    		result.add(sb.toString());
+    		return;    					                                      // dont forget that! in exit!!
+    	}
+    	if (isValid("" + s.charAt(index))){
+    		sb.append((char)(s.charAt(index) - '0' + 'A' - 1));
+    		helper(index+1, sb, s, result);
+    		sb.deleteCharAt(sb.length()-1);
+    	}
+    	if(s.length() == 1){
+    		return;
+    	}
+    	if (index+2 <= s.length() && isValid(s.substring(index,index+2))){
+    		sb.append((char)(Integer.valueOf(s.substring(index, index+2)) - 1 + 'A'));
+    		helper(index+2, sb, s, result);
+    		sb.deleteCharAt(sb.length()-1);   
+    	}
+    }
+    
+    public boolean isValid(String s){
+    	if(s.charAt(0) == '0'){
+    		return false;
+    	}
+    	return Integer.valueOf(s) <=26 && Integer.valueOf(s) >= 1;
+    }
+    
+}
