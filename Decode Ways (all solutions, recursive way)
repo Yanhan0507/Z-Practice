@@ -1,7 +1,7 @@
 // the main difference between iterative and recursive methods, is that the former one is bottom up and the later one 
 // is actually top down, thus, the base cases for iterative are M[0] and M[1] and for recursive is M[n] and M[n-1] 
 // (last time computation). Also, to compute a specific Solution[i], the corner case for iterative method is if 
-//  i-1>0 and i-2>0, while for recursion, the corner case is whether i+1<=length, and i+2<=length
+// i-1>0 and i-2>0, while for recursion, the corner case is whether i+1<=length, and i+2<=length
 
 public class Solution {
     public int numDecodings(String s) {
