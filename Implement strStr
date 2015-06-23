@@ -1,0 +1,46 @@
+/*
+  Implement strStr().
+  Returns the index of the first/last occurrence of needle in haystack, or -1 if needle is not part of haystack.
+*/
+
+// talking with interviewer about KMP algorithm but dont try to implement it
+public class Solution {
+    public int firstOccurrence(String haystack, String needle) {
+        if(needle.length() == 0){                                   // needle.length() = 0
+            return 0;
+        }
+        for(int i=0; i<=haystack.length() - needle.length(); i++){ // <=
+            int j = 0;
+            for(j=0; j<needle.length(); j++){
+                if( needle.charAt(j) != haystack.charAt(i+j) ){
+                    break;
+                }
+            }
+            if(j == needle.length()){
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    public int lastOccurrence(String haystack, String needle) {
+		    if(needle.equals("")){
+			      return haystack.length();
+		    }
+		    int index = -1;
+		    for(int i=0; i <= haystack.length() - needle.length(); i++){
+			      int j = 0;
+			      for(j=0; j<needle.length(); j++){
+				        if (needle.charAt(j) != haystack.charAt(i + j)){
+					          break;
+				        }
+			      }
+			      if(j == needle.length()){
+				          index = i;
+			      }
+		    }
+		    return index;
+	  }
+}
+
+
