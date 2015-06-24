@@ -1,0 +1,54 @@
+/*
+Given a binary tree, return the postorder traversal of its nodes' values.
+
+For example:
+Given binary tree {1,#,2,3},
+   1
+    \
+     2
+    /
+   3
+return [3,2,1].
+*/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+ 
+ // using variable prev is a smart track to make sure both left child and right child have already been visited
+ // another solution is to keep a map or flag to record state for each node. Anyway, we need to notice that one node 
+ // can be visted only if both of its children has been visited or null.
+ 
+public class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+         Stack<TreeNode> stack = new Stack<TreeNode>();
+		 List<Integer> result = new ArrayList<Integer>();
+		 if(root == null){
+            return result;
+         }
+		 stack.push(root);
+		 TreeNode prev = null;
+		 while(!stack.empty()){
+			 TreeNode t = stack.peek();
+			 if( (t.left == null && t.right == null) ||(prev != null && (t.left == prev || t.right == prev))){
+				 prev = t;
+				 stack.pop();
+				 result.add(t.val);
+				 continue;
+			 }
+			 if(t.right != null){
+				 stack.push(t.right);
+			 }
+			 if(t.left != null){
+				 stack.push(t.left);
+			 }
+		 }
+		 return result;
+    }
+}
