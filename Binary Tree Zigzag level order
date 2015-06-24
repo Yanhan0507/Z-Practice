@@ -1,0 +1,71 @@
+/*
+Given a binary tree, return the zigzag level order traversal of its nodes' values. (ie, from left to right, then right to left for the next level and alternate between).
+
+For example:
+Given binary tree {3,9,20,#,#,15,7},
+    3
+   / \
+  9  20
+    /  \
+   15   7
+return its zigzag level order traversal as:
+[
+  [3],
+  [20,9],
+  [15,7]
+]
+*/
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+ 
+ 
+public class Solution {
+	    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+	        List<List<Integer>> result = new ArrayList<List<Integer>>();
+	        if( root == null){
+	            return result;
+	        }
+	        boolean flag = true;
+	        List<TreeNode> list = new ArrayList<TreeNode>();
+	        List<Integer> num = new ArrayList<Integer>();
+	        List<TreeNode> tmp = new ArrayList<TreeNode>();
+	        list.add(root);
+	        num.add(root.val);
+	   
+	        while(list.size() > 0){
+	        	
+	            if(!flag){
+	                Collections.reverse(num);
+	            }
+	            flag = !flag;
+	            result.add(new ArrayList<Integer>(num));
+	            num = new ArrayList<Integer>();
+	            tmp = new ArrayList<TreeNode>();
+	            for(int i=0; i<list.size(); i++){
+
+	                TreeNode t = list.get(i);
+	                if(t.left != null){
+	                    tmp.add(t.left);
+	                    num.add(t.left.val);
+	                }
+	                if(t.right != null){
+	                    tmp.add(t.right);
+	                    num.add(t.right.val);
+	                }
+	            }
+	            list = tmp;
+	            
+	        }
+	       
+	        return result;
+	    }
+}
