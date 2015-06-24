@@ -23,7 +23,7 @@ public class Solution {
 }
 
 
-/* another solution replacing int[] with map:
+/* another solution replacing map with int[]:
 
 public class Solution {
    public int lengthOfLongestSubstring(String s) {
