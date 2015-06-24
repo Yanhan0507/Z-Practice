@@ -1,0 +1,39 @@
+
+/*
+	Given a string S, find the longest palindromic substring in S. 
+	You may assume that the maximum length of S is 1000, 
+	and there exists one unique longest palindromic substring.
+*/
+
+public class Solution {
+	public String longestPalindrome(String s) {
+		if(s.length() == 0){
+			return "";
+		}
+		String result = "" + s.charAt(0);
+		for(int i=1; i<s.length(); i++){
+			int length = helper(s, i-1, i);
+			if( 2 * length > result.length()){
+				result = s.substring(i-length, i+length);
+			}
+			length = helper(s,i-1,i+1);
+			if( 2 * length + 1 > result.length()){
+				result = s.substring(i-length, i+length+1);
+			}
+		}
+		return result;
+	}
+	
+	public int helper(String s, int start, int end){
+		int length = 0;
+		while(start>=0 && end<s.length()){
+			if(s.charAt(start) != s.charAt(end)){
+				break;
+			}
+			start--;
+			end++;
+			length++;
+		}
+		return length;
+	}
+}
