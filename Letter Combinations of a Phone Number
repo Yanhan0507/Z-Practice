@@ -1,0 +1,37 @@
+	/*
+		Given a digit string, return all possible letter combinations that the number could represent.
+		A mapping of digit to letters (just like on the telephone buttons) is given below.
+		
+		Input:Digit string "23"
+		Output: ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
+		
+		The keyboard can be like this:
+		String[] dict = {" ", " ", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+	*/
+
+public class Solution {
+    public List<String> letterCombinations(String digits) {
+        List<String> result = new ArrayList<String>();
+        if(digits.length() == 0){
+        	return result;
+        }
+        String[] keyboard = {" ", " ", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        helper(0, digits, keyboard, new StringBuilder(), result);
+        return result;
+    }
+    
+    public void helper(int index, String digits, String[] keyboard, 
+    		StringBuilder sb, List<String> result){
+    	if(index == digits.length()){
+    		result.add(sb.toString());   			                            // toString(); substring();
+    		return;   								                                    // dont forget that, exit!
+    	}
+    	int num = digits.charAt(index) - '0';
+    	String tmp = keyboard[num];
+    	for(int i=0; i<tmp.length(); i++){
+    		sb.append(tmp.charAt(i));
+    		helper(index+1, digits, keyboard, sb, result);
+    		sb.deleteCharAt(sb.length() - 1);
+    	}
+    }
+}
