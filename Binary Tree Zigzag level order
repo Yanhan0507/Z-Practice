@@ -16,7 +16,6 @@ return its zigzag level order traversal as:
 ]
 */
 
-
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
@@ -27,45 +26,39 @@ return its zigzag level order traversal as:
  * }
  */
  
+ //  Result relates to Integer, so we need to make lists regarding Integer and TreeNode recursively. 
+ //  Dont write code like List<TreeNode> list = new ArrayList<Integer>();
  
 public class Solution {
-	    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-	        List<List<Integer>> result = new ArrayList<List<Integer>>();
-	        if( root == null){
-	            return result;
-	        }
-	        boolean flag = true;
-	        List<TreeNode> list = new ArrayList<TreeNode>();
-	        List<Integer> num = new ArrayList<Integer>();
-	        List<TreeNode> tmp = new ArrayList<TreeNode>();
-	        list.add(root);
-	        num.add(root.val);
-	   
-	        while(list.size() > 0){
-	        	
-	            if(!flag){
-	                Collections.reverse(num);
-	            }
-	            flag = !flag;
-	            result.add(new ArrayList<Integer>(num));
-	            num = new ArrayList<Integer>();
-	            tmp = new ArrayList<TreeNode>();
-	            for(int i=0; i<list.size(); i++){
-
-	                TreeNode t = list.get(i);
-	                if(t.left != null){
-	                    tmp.add(t.left);
-	                    num.add(t.left.val);
-	                }
-	                if(t.right != null){
-	                    tmp.add(t.right);
-	                    num.add(t.right.val);
-	                }
-	            }
-	            list = tmp;
-	            
-	        }
-	       
-	        return result;
-	    }
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        // while loop + for loop better than for loop + for loop
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if(root == null){
+            return result;
+        }
+        List<TreeNode> list = new ArrayList<TreeNode>();
+        list.add(root);
+        boolean flag = true;
+        while(list.size() > 0){
+            List<Integer> num = new ArrayList<Integer>();
+            List<TreeNode> tmp = new ArrayList<TreeNode>();
+            for(int i=0; i<list.size(); i++){
+                TreeNode t = list.get(i);
+                num.add(t.val);
+                if(t.left != null){
+                    tmp.add(t.left);
+                }
+                if(t.right != null){
+                    tmp.add(t.right);
+                }
+            }
+            list = tmp;
+            if(!flag){
+                Collections.reverse(num);
+            }
+            flag = !flag;
+            result.add(num);
+        }
+        return result;
+    }
 }
