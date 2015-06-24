@@ -1,0 +1,32 @@
+/*
+	Given two numbers represented as strings, return multiplication of the numbers as a string.
+	
+	Note: The numbers can be arbitrarily large and are non-negative.	
+*/
+    
+    public String multiply(String num1, String num2) {
+    	int[] record = new int[num1.length() + num2.length()];
+    	StringBuilder result = new StringBuilder();
+    	for(int i=0; i<num1.length(); i++){
+    		for(int j=0; j<num2.length(); j++){
+    			record[i+j+1] += (num1.charAt(i) - '0')*(num2.charAt(j) - '0');
+    		}
+    	}
+    	int carry = 0;
+   
+    	for(int i=record.length-1; i>=0; i--){
+    		int value = (record[i] + carry) % 10;
+    		carry = (record[i] + carry) / 10;
+    		record[i] = value;
+    	}
+    	
+    	for(int i = 0; i<record.length; i++){
+    		result.append(record[i]);
+    	}
+    
+    	while(result.length() >1 && result.charAt(0) == '0'){   // cannot be i<result.length()-1, cuz if deleted, length will be changed, 
+    		result.deleteCharAt(0);						                    // just like we cannot remove when there is a iterator for collections object 
+    															                            // result.deleteCharAt(0) is better than deleteCharAt(i);	
+    	}
+    	return result.toString();
+    }
