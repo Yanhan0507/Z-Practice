@@ -21,3 +21,28 @@ public class Solution {
 	   return length;
    }
 }
+
+
+/* another solution replacing int[] with map:
+
+public class Solution {
+   public int lengthOfLongestSubstring(String s) {
+	   int start = 0;
+	   int length = 0;
+	   HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+	   int[] map = new int[255];
+	   for(int i=0; i<map.length; i++){
+		   map[i] = -1;
+	   }
+	   for(int i=0; i<s.length(); i++){
+		   char c = s.charAt(i);
+		  // if(map[c] != -1){
+			   start = Math.max(start, map[c] + 1); 
+		  // }
+		   length = Math.max(length, i-start+1);
+		   map[c] = i;
+	   }
+	   return length;
+   }
+}
+*/
