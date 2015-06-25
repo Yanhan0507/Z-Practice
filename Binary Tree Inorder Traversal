@@ -32,6 +32,23 @@
  *     TreeNode(int x) { val = x; }
  * }
  */
+ 
+ /*
+      At the very beginning, I once think the condition for while loop should be stack.empty(), and everytime we just need 
+      to process poped element untile the stack is empty. However, when we get a poped certain element, we dont know whether
+      its left child has been visited or not. If its left child has already been visited, we can simply print it and then go 
+      to its right child , else,  we need to push the left child to stack. So, we may need some additional space to record 
+      this information: 1) using a visited HashSet 2) add a flag to each node. However, both of these solutions cost extra 
+      space.
+      Actually, we can only push the current node and its left child, until it is null. And then we pop from stack, and thus we 
+      get the element get a element which we need to process it right now. Also, this element has an important feature: it has 
+      no left child, or its left child has been visted(its left child must poped and thus has been visited ealier). According 
+      to this feature, we simpy print its value, and let current node be its right child. If its right child is null, we pop() 
+      a new element element from stack, otherwise, we push the current node and all of its left children to stack (like 
+      the steps above)
+      Forgive my trival explanation, I guess the code below can explain it more clear.
+ */
+ 
 public class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> result = new ArrayList<Integer>();
