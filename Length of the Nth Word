@@ -11,7 +11,7 @@
 	return 5.
 */
 	
-	public class Solution {
+public class Solution {
     public int lengthOfLastWord(String s, int n) {
         if(s.length() == 0){
         	return 0;
