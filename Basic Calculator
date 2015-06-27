@@ -1,0 +1,94 @@
+/*
+  Implement a basic calculator to evaluate a simple expression string.
+  The expression string may contain open ( and closing parentheses ), 
+  the plus + or minus sign -, non-negative integers and empty spaces .
+  You may assume that the given expression is always valid.
+  
+  Some examples:
+  "1 + 1" = 2
+  " 2-1 + 2 " = 3
+  "(1+(4+5+2)-3)+(6+8)" = 23
+*/
+
+
+// 1 divide the infix to a List<String>, removing the " " and recognizing all nums
+// 2 using stack to build the postfix expression
+// 3 using stack to calculate the postfix expression
+
+
+public class Solution {
+ public int calculate(String s) {
+        List<String> result = new ArrayList<String>();
+        int i = 0;
+        while(i < s.length()){
+            if(s.charAt(i) == ' '){
+                i++;
+                continue;
+            }
+            if(!isNum(s.charAt(i))){
+                result.add(s.charAt(i) + "");
+                i++;
+                continue;
+            }
+            StringBuilder sb = new StringBuilder();
+            while(i < s.length() && isNum(s.charAt(i))){
+                sb.append(s.charAt(i));
+                i++;
+            }
+            result.add(sb.toString());
+        }
+        List<String> postfix = new ArrayList<String>();
+        Stack<String> operand = new Stack<String>();
+        
+        for(i=0; i<result.size(); i++){
+            String tmp = result.get(i);
+            if(tmp.equals("+") || tmp.equals("-")){
+                if(!operand.empty()){
+                	if(!operand.peek().equals("(")){
+                		postfix.add(operand.pop());
+                	}         
+                }
+                operand.push(tmp);
+            }
+            else if(tmp.equals("(")){
+                operand.push(tmp);
+            }
+            else if(tmp.equals(")")){
+                String op = operand.pop();
+                while(!op.equals("(")){
+                    postfix.add(op);
+                    op = operand.pop();
+                }
+            }
+            else{
+                postfix.add(tmp);
+            }
+        }
+        
+        while(!operand.empty()){
+        	postfix.add(operand.pop());
+        }
+        
+        Stack<Integer> num = new Stack<Integer>();
+        for(String str: postfix){
+            if(str.equals("+")){
+                int y = num.pop();
+                int x = num.pop();
+                num.push(x+y);
+            }
+            else if(str.equals("-")){
+                int y = num.pop();
+                int x = num.pop();
+                num.push(x-y);
+            }
+            else{
+                num.push(Integer.valueOf(str));
+            }
+        }
+        return num.pop();
+    }
+    
+    public boolean isNum(char ch){
+        return ch - '0' <= 9 && ch - '0' >= 0;
+    }
+}
