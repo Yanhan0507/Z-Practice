@@ -1,0 +1,54 @@
+/*
+Implement an iterator over a binary search tree (BST). Your iterator will be initialized with the root node of a BST.
+
+Calling next() will return the next smallest number in the BST.
+
+Note: next() and hasNext() should run in average O(1) time and uses O(h) memory, where h is the height of the tree.
+
+Credits:
+Special thanks to @ts for adding this problem and creating all test cases.
+*/
+
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
+/* The solution actually works in the same way as binary tree inorder traversal: using stack. In order traversal 
+can keep the order. However, here, we dont need a result ArrayList, we just need a stack which at most be pushed h times.
+*/
+public class BSTIterator {
+    Stack<TreeNode> stack = new Stack<TreeNode>();
+    public BSTIterator(TreeNode root) {
+        while(root != null){
+            stack.push(root);
+            root = root.left;
+        }
+    }
+
+    /** @return whether we have a next smallest number */
+    public boolean hasNext() {
+        return !stack.empty();
+    }
+
+    /** @return the next smallest number */
+    public int next() {
+        if(stack.empty()){
+            return 0;
+        }
+        TreeNode tmp = stack.pop();
+        int result = tmp.val;
+        tmp = tmp.right;
+        while(tmp != null){
+            stack.push(tmp);
+            tmp = tmp.left;
+        }
+        return result;
+        
+    }
+}
