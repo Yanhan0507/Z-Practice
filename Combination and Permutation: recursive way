@@ -1,0 +1,57 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
+public class Solution {
+	
+
+	public void printAllsubset(ArrayList<Integer> set){
+		comb(new ArrayList<Integer>(), 0, set);
+	}
+	
+	public void comb(List<Integer> tmp, int index, List<Integer> set){
+		if(set.size() == index){
+			System.out.println(tmp);
+			return;   								// dont forget return in exit
+		}
+		tmp.add(set.get(index));
+		comb(tmp, index + 1, set);
+		tmp.remove(tmp.size() - 1);
+		comb(tmp, index + 1, set);
+	}
+	
+	
+	public void printAllpermutation(ArrayList<Integer> set){
+		perm(set, 0, set.size() - 1);
+	}
+	
+	public void perm(ArrayList<Integer> set, int start, int end){
+		if(start == end){
+			System.out.println(set);
+			return;
+		}
+		for(int i = start; i<= end; i++){
+			swap(set, i, start);
+			perm(set, start + 1, end);
+			swap(set, start, i);
+		}
+	}
+	
+	public void swap(ArrayList<Integer> set, int i, int j){
+		int tmp = set.get(i);
+		set.set(i, set.get(j));
+		set.set(j, tmp);
+	}
+	
+    public static void main(String[] args){
+    	ArrayList<Integer> list = new ArrayList<Integer>();
+    	Solution s = new Solution();
+    	list.add(1);
+    	list.add(2);
+    	list.add(3); 	
+    	// combination
+        s.printAllsubset(list);
+        // permutation
+    	s.printAllpermutation(list);
+    }
+}
