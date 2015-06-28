@@ -1,0 +1,46 @@
+/*
+  Given an infinite number of quaters, dimes, nickels and pennies, 
+  write code to calculate the number of ways of representing n cents 
+*/
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
+public class Solution {
+	
+	
+	public int findAllSolutions(int money){
+		int[] changes ={25, 10, 5, 1};
+		if(money == 0){
+			return 0;
+		}
+		int M[] = new int[money + 1];
+		M[0] = 1;
+		return helper(M, changes, money, 0);
+	}
+	
+	public int helper(int[] M, int[] changes, int money, int index){
+		if(M[money] != 0){
+			return M[money];
+		}
+		if(index == 4){
+			return 0;
+		}
+		else{
+			int i = 0;
+			while(changes[index] * i <= money){
+				M[money] += helper(M, changes, money-i*changes[index], index + 1);
+				i++;
+			}
+			return M[money];
+		}
+
+	}
+	
+	
+    public static void main(String[] args){
+    	Solution s = new Solution();
+    	System.out.println(s.findAllSolutions(10));
+    }
+}
