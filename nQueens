@@ -1,0 +1,57 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class Solution {
+	
+	class Node{
+		public String toString() {
+			
+			return "(" + x + "," + y + ")" +" ";
+		}
+		int x, y;
+		Node(int x, int y){
+			this.x = x;
+			this.y = y;
+		}
+	}
+	
+	List<List<Node>> nQueens(int n){
+		List<List<Node>> result = new ArrayList<List<Node>>();
+		helper(0, n, new ArrayList<Node>(), result);
+		return result;
+	}
+	
+	void helper(int row, int n, ArrayList<Node> tmp, List<List<Node>> result){
+		if(row == n){
+			result.add(new ArrayList<Node>(tmp));
+			return;
+		}
+		for(int i=0; i<n; i++){
+			if(isValid(tmp, row, i)){
+				tmp.add(new Node(row, i));
+				helper(row+1, n, tmp, result);
+				tmp.remove(tmp.size()-1);
+			}
+		}
+	}
+	
+	public boolean isValid(ArrayList<Node> tmp, int x,int y){
+		for(Node n: tmp){
+			if(n.x == x || n.y == y || Math.abs(n.x - x) == Math.abs(n.y - y)){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public void showResult(List<List<Node>> list){
+		for(List<Node> li: list){
+			System.out.println(li);
+		}
+	}
+	
+  public static void main(String[] args){
+    Solution s = new Solution();
+    s.showResult(s.nQueens(8));
+  }
+}
