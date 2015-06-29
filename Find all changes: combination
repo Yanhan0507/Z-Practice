@@ -3,10 +3,89 @@
   write code to calculate the number of ways of representing n cents 
 */
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+// notice that it is combination not permutation, also, necessary to use two dimensional array, rather than one dimensional
+// I have commented my first time wrong solution in the downmost. when we call 10 + helper(15), it will update 
+/  /M[15] = 4 (5+5+5, 5+5+5*1, 5+10*1, 1*15) but actually it lose the 10+5 and 10+1+1+1+1+1
 
+
+// optimal DP solution
+public class Solution {
+	
+	public int findAllchanges(int money){
+		if(money == 0){
+			return 0;
+		}
+		int[] changes = {25, 10, 5, 1};
+		int[][] M = new int[money + 1][5];
+		for(int i=0; i<= 4; i++){
+			M[0][i] = 1;
+		}
+		for(int i=0; i<= money; i++){
+			M[i][3] = 1;
+		}
+		return helper(money, changes, 0, M);
+	}
+	
+	public int helper(int money, int[] changes, int level, int[][] M){
+		if(M[money][level] != 0){
+			return M[money][level];
+		}
+		else if(level == 4){
+			return 0;
+		}
+		int coin = changes[level];
+		int i = 0;
+		int ways = 0;
+		while(coin * i <= money){
+			ways += helper(money - coin*i, changes, level+1, M);
+			i++;
+		}
+		M[money][level] = ways;
+		return ways;
+	}
+	
+    public static void main(String[] args){
+    	Solution s = new Solution();
+    	System.out.println(s.findAllchanges(50));
+    	
+    }
+}
+
+
+
+
+/* recursive solution, expoential time
+public class Solution {
+	public int findAllchanges(int money){
+		int[] changes = {25, 10, 5, 1};
+		return helper(money, changes, 0);
+	}
+	public int helper(int money, int[] changes, int level){
+		if(money == 0){
+			return 1;
+		}
+		else if(level == 4){
+			return 0;
+		}
+		int coin = changes[level];
+		int i = 0;
+		int ways = 0;
+		while(coin * i <= money){
+			ways += helper(money - coin*i, changes, level+1);
+			i++;
+		}
+		return ways;
+	}
+	
+    public static void main(String[] args){
+    	Solution s = new Solution();
+    	System.out.println(s.findAllchanges(25));
+    	
+    }
+}
+*/
+
+/* first time wrong solution, trying to use single array to record all information
 public class Solution {
 	
 	
@@ -37,10 +116,11 @@ public class Solution {
 		}
 
 	}
-	
-	
     public static void main(String[] args){
     	Solution s = new Solution();
     	System.out.println(s.findAllSolutions(10));
     }
 }
+*/
+
+
