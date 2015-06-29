@@ -3,7 +3,7 @@
   Returns the index of the first/last occurrence of needle in haystack, or -1 if needle is not part of haystack.
 */
 
-// talking with interviewer about KMP algorithm but dont try to implement it
+//knowing KMP algorithm is good but dont try to implement it
 public class Solution {
     public int firstOccurrence(String haystack, String needle) {
         if(needle.length() == 0){                                   // needle.length() = 0
