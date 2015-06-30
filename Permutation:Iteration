@@ -1,0 +1,42 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class Solution {
+	
+	public List<List<Integer>> getAllpermutations(List<Integer> target){
+		if(target == null){
+			return new ArrayList<List<Integer>>();
+		}
+		List<List<Integer>> result = new ArrayList<List<Integer>>();
+		result.add(new ArrayList<Integer>());
+		for(int i=0; i<target.size(); i++){
+			List<List<Integer>> tmp = new ArrayList<List<Integer>>();;
+			for(int j=0; j<result.size(); j++){
+				List<Integer> subList = result.get(j);
+				for(int k = 0; k <= subList.size(); k++){
+					List<Integer> record = new ArrayList<Integer>(subList);
+					record.add(k, target.get(i));
+					tmp.add(record);
+				}
+			}
+			result = tmp;
+		}
+		return result;
+	}
+	
+	public void show(List<List<Integer>> target){
+		for(int i=0; i<target.size(); i++){
+			System.out.println(target.get(i));
+		}
+	}
+	
+    public static void main(String[] args){
+    	Solution s = new Solution();
+    	List<Integer> list = new ArrayList<Integer>();
+    	list.add(1);
+    	list.add(2);
+    	list.add(3);
+    	list.add(4);
+    	s.show(s.getAllpermutations(list));
+    }
+}
