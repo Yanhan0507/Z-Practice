@@ -1,0 +1,96 @@
+
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
+
+public class Solution {
+	
+/*
+	 Implement the “paint fill” function that one might see on many image editing programs. 
+	 That is, given a screen (represented by a 2 dimensional array of Colors), a point, and a new color, 
+	 fill in the surrounding area until you hit a border of that color.’
+*/
+	class Point{
+		
+		int x, y;
+		
+		Point(int x, int y){
+			this.x = x;
+			this.y = y;
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if(!(obj instanceof Point)){
+				return false;
+			}
+			Point tmp = (Point)obj;
+
+			return this.x == tmp.x && this.y == tmp.y;
+		}
+	}
+	
+	public void fill(int[][] pic, int x, int y, int color){
+		int record = pic[x][y];
+		if(color == record || x > pic.length || x<0 || y <0 || y>pic[0].length){
+			return;
+		}
+		LinkedList<Point> queue = new LinkedList<Point>();
+		Set<Point> visited = new HashSet<Point>();
+		Point tmp = new Point(x,y);
+		queue.add(tmp);
+		visited.add(tmp);
+		while(!queue.isEmpty()){
+			Point p = queue.pop();
+			if(p.x - 1 >= 0 && pic[p.x - 1][p.y] == record){
+				Point left = new Point(p.x - 1, p.y);
+				if(!visited.contains(left)){
+					queue.add(left);
+					visited.add(left);
+				}
+			}
+			if(p.x + 1 < pic.length && pic[p.x + 1][p.y] == record){
+				Point right = new Point(p.x + 1, p.y);
+				if(!visited.contains(right)){
+					queue.add(right);
+					visited.add(right);
+				}
+			}
+			if(p.y + 1 < pic[0].length && pic[p.x][p.y + 1] == record){
+				Point up = new Point(p.x, p.y + 1);
+				if(!visited.contains(up)){
+					queue.add(up);
+					visited.add(up);
+				}
+			}
+			if(p.y - 1 >= 0 && pic[p.x][p.y - 1] == record){
+				Point down = new Point(p.x, p.y - 1);
+				if(!visited.contains(down)){
+					queue.add(down);
+					visited.add(down);
+				}
+			}
+			pic[p.x][p.y] = color;
+		}
+	}
+	
+	public void show(int[][] pic){
+		for(int i=0; i<pic.length; i++){
+			for(int j=0; j<pic[i].length; j++){
+				System.out.print(pic[i][j] + " ");
+			}
+			System.out.println();
+		}
+	}
+    public static void main(String[] args){
+    	Solution s = new Solution();
+    	int[][] pic = new int[7][7];
+    	for(int i=1; i<pic[1].length; i++){
+    		pic[1][i] = 2;
+    	}
+    	s.show(pic);
+    	System.out.println("-----------");
+    	s.fill(pic, 2, 2, 5);
+    	s.show(pic);
+    }
+}
