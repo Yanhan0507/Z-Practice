@@ -1,0 +1,67 @@
+// to get the nth number of Fibonacci. The question is so trivial and simple, 
+// and many are not willing to spend time on it. But I did face it in FaceBook's interview.
+
+public class Solution {
+	
+	public int fib1(int n){
+		if(n == 1 || n== 2){
+			return 1;
+		}
+		return fib1(n-1) + fib1(n-2);
+	}
+	
+	public int fib2(int n){
+		if(n ==1 || n == 2){
+			return 1;
+		}
+		int[] M = new int[n];
+		M[0] = 1;
+		M[1] = 1;
+		for(int i = 2; i<n; i++){
+			M[i] = M[i-1] + M[i-2];
+		}
+		return M[n-1];
+	}
+	
+	public int fib3(int n){
+		if(n == 1 || n == 2){
+			return 1;
+		}
+		int[] M = new int[n+1];
+		M[1] = 1;
+		M[2] = 1;
+		return helper(n, M);
+	}
+	
+	public int helper(int n, int[] M){
+		if(M[n] != 0){
+			return M[n];
+		}
+		M[n] = helper(n-1, M) + helper(n-2, M);
+		return M[n];
+		
+	}
+	
+	
+	public int fib4(int n){
+		if(n == 1 || n== 2){
+			return 1;
+		}
+		int first = 1;
+		int second = 1;
+		int i = 2;
+		int third;
+		while(i < n){
+			third = first + second;
+			first = second;
+			second = third;
+			i++;
+		}
+		return second;
+	}
+	
+    public static void main(String[] args){
+    	Solution s = new Solution();
+    	System.out.println(s.fib3(10));
+    }
+}
