@@ -17,10 +17,26 @@
  * }
  */
  
- // using inorder traversal, the solution is simple but using O(n) + O(h) space
+ // left < root < right
+ // isValid(): using min and max, transitive property of inequation, using O(h) space
+ // isValid1(): using inorder traversal, O(n) + O(h) space
  
 public class Solution {
+
     public boolean isValidBST(TreeNode root) {
+        return isValidBST(root, null, null);
+    }
+    public boolean isValidBST(TreeNode root, Integer max, Integer min){  // Integer so that we can pass null
+        if(root == null){
+            return true;
+        }  
+        if( ( max != null && root.val >= max ) || ( min != null && root.val <= min) ){
+            return false;
+        }
+        return isValidBST(root.right, max, root.val) && isValidBST(root.left, root.val, min);
+    }
+    
+    public boolean isValidBST1(TreeNode root) {
         List<TreeNode> list = new ArrayList<TreeNode>();
         getList(list, root);
         for(int i=0; i<list.size() -1; i++){
