@@ -1,6 +1,6 @@
 // to get the nth number of Fibonacci. The question is so trivial and simple, 
 // and many are not willing to spend time on it. But I did face it in FaceBook's interview.
-
+// I am boring enough to do it in 4 ways...
 public class Solution {
 	
 	public int fib1(int n){
