@@ -1,0 +1,106 @@
+public class Solution {
+	public void mergeSort(int[] array){
+		if(array.length == 0){
+			return;
+		}
+
+		mergeSort(0, array.length - 1, array);
+	}
+	
+	public void mergeSort(int start, int end, int[] array){
+		if(start == end){
+			return;
+		}
+		int mid = (start + end)/2;
+		mergeSort(start, mid, array);
+		mergeSort(mid+1, end, array);
+		merge(start, end, array);
+	}
+	
+	public void merge(int start, int end, int[] array){
+		int mid = (start+end)/2;
+		int i = start;
+		int j = mid + 1;
+		int[] tmp = new int[end - start + 1];
+		int k = 0;
+ 		while( i<=mid && j<=end){
+			if(array[i] < array[j]){
+				tmp[k++] = array[i++];
+			}
+			else{
+				tmp[k++] = array[j++];
+			}
+		}
+ 		while(i<=mid){
+ 			tmp[k++] = array[i++];
+ 		}
+ 		while(j<=end){
+ 			tmp[k++] = array[j++];
+ 		}
+ 		k = 0;
+ 		for(int m = start; m <= end; m++){
+ 			array[m] = tmp[k++];
+ 		}
+	}
+	
+	
+	public void bubbleSort(int[] array){
+		for(int i=0; i<array.length; i++){
+			for(int j=0; j<array.length-i-1; j++){
+				if(array[i] > array[i+1]){
+					int tmp = array[i];
+					array[i] = array[i+1];
+					array[i+1] = tmp;
+				}
+			}
+		}
+	}
+	
+	
+	public void quickSort(int[] array){
+		quickSort(0, array.length - 1, array);
+	}
+	
+	public void quickSort(int start, int end, int[] array){
+		int piv = array[end];
+		int i = start;
+		int j = end;
+		while(i <= j){
+			while(array[i] < piv){
+				i++;
+			}
+			while(array[j] > piv){
+				j--;
+			}
+			if(i <= j){
+				int tmp = array[i];
+				array[i] = array[j];
+				array[j] = tmp;
+				i++;
+				j--;
+			}
+		}
+		if(i < end){
+			quickSort(i, end, array);
+		}
+		if(j > start){
+			quickSort(start, j, array);
+		}
+	}
+
+	
+	public void show(int[] array){
+		for(int i=0; i<array.length; i++){
+			System.out.println(array[i]);
+		}
+	}
+	
+	public static void main(String[] args){
+		int[] array = {7, 1, 2, 8, 20, 27};
+		Solution s = new Solution();
+//		s.mergeSort(array);
+//		s.bubbleSort(array);
+		s.quickSort(array);
+		s.show(array);
+	}
+}
