@@ -26,25 +26,25 @@ public class Solution {
         ListNode prev = dummy;
         ListNode first = head;
         ListNode second = head;
-        while(m > 1){
-            prev = prev.next;
-            first = first.next;
-            m--;
-        }
-        while(n > 1){
+        int index = 1;
+        while(index < n){
+            if(index < m){
+                first = first.next;
+                prev = prev.next;
+            }
             second = second.next;
-            n --;
+            index++;
         }
-        ListNode last = second.next;
         
-        ListNode front = last;
+        ListNode rear = second.next;
+        ListNode record = rear;
         while(first != second){
             ListNode tmp = first.next;
-            first.next = front;
-            front = first;
+            first.next = rear;
+            rear = first;
             first = tmp;
         }
-        first.next = front;
+        first.next = rear;
         prev.next = first;
         return dummy.next;
     }
