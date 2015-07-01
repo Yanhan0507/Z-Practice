@@ -58,36 +58,33 @@ public class Solution {
 	
 	
 	public void quickSort(int[] array){
-		quickSort(0, array.length - 1, array);
+		quickSort(array, 0, array.length - 1);
 	}
 	
-	public void quickSort(int start, int end, int[] array){
-		int piv = array[end];
-		int i = start;
-		int j = end;
-		while(i <= j){
-			while(array[i] < piv){
-				i++;
-			}
-			while(array[j] > piv){
-				j--;
-			}
-			if(i <= j){
-				int tmp = array[i];
-				array[i] = array[j];
-				array[j] = tmp;
-				i++;
-				j--;
-			}
-		}
-		if(i < end){
-			quickSort(i, end, array);
-		}
-		if(j > start){
-			quickSort(start, j, array);
+	public void quickSort(int[] array, int start, int end){
+		if(start < end){
+			int index = partition(array, start, end);
+			quickSort(array, start, index - 1);
+			quickSort(array, index + 1, end);
 		}
 	}
-
+	
+	public int partition(int[] array, int start, int end){
+		int piv = array[end];
+		while(start < end){
+			while(start < end && array[start] <= piv)
+				start ++;
+			if(start < end)
+				array[end--] = array[start];
+			while(start < end && array[end] >= piv)
+				end --;
+			if(start < end)
+				array[start++] = array[end];
+		}
+		array[start] = piv;
+		return start;
+	}
+	
 	
 	public void show(int[] array){
 		for(int i=0; i<array.length; i++){
