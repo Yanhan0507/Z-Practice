@@ -1,0 +1,72 @@
+//  keep the odd node in order, and reverse the even nodes.	
+//  1 : L1 -> L2 -> L3 -> … -> L2N :  L1 -> L2N -> L3 -> L2N-2 -> ... -> L2
+//  2:  L1 -> L2 -> L3 -> … -> L2N -> L2N+1 : L1 ->L2N -> L3 - > L2N-2 ->L5 ->L2N-4 -> L7 ... ->  L2 -> L2N+1
+//  1 2 3 4 5 6 -> 1 6 3 4 5 2
+//  1 2 3 4 5 6 7 -> 1 6 3 4 5 2 7
+
+public class Solution {
+	    public void reorderList(ListNode head) {
+	        if(head == null || head.next == null){
+	            return;
+	        }
+	        ListNode prev = null;
+	        ListNode first = head;
+	        ListNode second = head.next;
+	        head.next = null;
+	        while(second!= null && second.next != null){
+	            ListNode tmp = second.next;
+	            second.next = prev;
+	            first.next = tmp;
+	            prev = second;
+	            first = tmp;
+	            second = first.next;
+	        }
+	        first.next = null;
+	        ListNode head2;
+	        if(second == null){
+	            head2 = prev;
+	        }
+	        else{
+	            second.next = prev;
+	            head2 = second;
+	        }
+	        
+	        ListNode newHead = head;
+	        while(head2 != null){
+	            ListNode tmp = head2.next;
+	            head2.next = head.next;
+	            head.next = head2;
+	            head = head2.next;
+	            head2 = tmp;
+	        }
+	        head = newHead;
+	    }
+	
+	
+	public void show(ListNode head){
+		while(head != null){
+			System.out.println(head.val);
+			head = head.next;
+		}
+	}
+	public static void main(String[] args){
+
+		Solution s = new Solution();
+		ListNode head = new ListNode(1);
+		ListNode n1 = new ListNode(2);
+		ListNode n2 = new ListNode(3);
+		ListNode n3 = new ListNode(4);
+		ListNode n4 = new ListNode(5);
+		ListNode n5 = new ListNode(6);
+		ListNode n6 = new ListNode(7);
+		head.next = n1;
+		n1.next = n2;
+		n2.next = n3;
+		n3.next = n4;
+		n4.next = n5;
+		n5.next = n6;
+		n6.next = null;
+		s.reorderList(head);
+		s.show(head);
+	}
+}
