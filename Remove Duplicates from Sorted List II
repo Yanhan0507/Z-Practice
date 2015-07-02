@@ -1,0 +1,60 @@
+/*
+	Given a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list.
+	
+	For example,
+	Given 1->2->3->3->4->4->5, return 1->2->5.
+	Given 1->1->1->2->3, return 2->3.
+*/
+
+public class Solution{
+
+	public ListNode deleteDuplicates(ListNode head) {
+		ListNode dummy = new ListNode(-1);
+		dummy.next = head;
+		ListNode prev = dummy;
+		ListNode cur = head;
+		while(cur != null && cur.next != null){
+			boolean repeated = false;
+			while(cur.next != null && cur.val == cur.next.val){
+				cur = cur.next;
+				repeated = true;
+			}
+			if(!repeated){
+				prev = cur;
+				cur = cur.next;
+			}
+			else{
+				prev.next = cur.next;
+				cur.next = null;
+				cur = prev.next;
+			}
+		}
+		return dummy.next;
+    }
+	
+	public void show(ListNode head){
+		while(head != null){
+			System.out.println(head.val);
+			head = head.next;
+		}
+	}
+	
+	public static void main(String[] args){
+		Solution s = new Solution();
+		ListNode head = new ListNode(1);
+		ListNode n1 = new ListNode(1);
+		ListNode n2 = new ListNode(3);
+		ListNode n3 = new ListNode(4);
+		ListNode n4 = new ListNode(5);
+		ListNode n5 = new ListNode(5);
+		ListNode n6 = new ListNode(7);
+		head.next = n1;
+		n1.next = n2;
+		n2.next = n3;
+		n3.next = n4;
+		n4.next = n5;
+		n5.next = n6;
+		n6.next = null;
+		s.show(s.deleteDuplicates(head));
+	}
+}
