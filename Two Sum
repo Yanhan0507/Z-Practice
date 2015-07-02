@@ -1,0 +1,51 @@
+public class Solution {
+
+/*
+  Given an array of integers, find two numbers such that they add up to a specific target number.
+  
+  The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2. Please note that your returned answers (both index1 and index2) are not zero-based.
+  
+  You may assume that each input would have exactly one solution.
+  
+  Input: numbers={2, 7, 11, 15}, target=9
+  Output: index1=1, index2=2
+*/
+
+    public int[] twoSum(int[] nums, int target) {
+        // be careful that the array is not sorted, and we cannot sort it, cuz we need the original index.
+        // the value of element is the key, and the value is index, for each value, we need at most two indice
+        // index is from 1 not 0, and shoud be sorted
+        HashMap<Integer, List<Integer>> map = new HashMap<Integer, List<Integer>>(nums.length);  // reserve for a fixed length
+        for(int i = 0; i<nums.length; i++){
+            if(map.containsKey(nums[i])){
+                if(map.get(nums[i]).size() < 2){
+                    map.get(nums[i]).add(i);
+                }
+            }
+            else{
+                map.put(nums[i], new ArrayList<Integer>(2));
+                map.get(nums[i]).add(i);
+            }
+        }
+        int[] result = new int[2];
+        for(Integer num1: map.keySet()){
+            if(2*num1 == target){                                                                // dont forget that case
+                if(map.get(num1).size() == 2){
+                    result[0] = map.get(num1).get(0) + 1;
+                    result[1] = map.get(num1).get(1) + 1;
+                    break;
+                }
+            }
+            else if(map.containsKey(target - num1)){
+                result[0] = map.get(num1).get(0) + 1;
+                result[1] = map.get(target - num1).get(0) + 1;
+                break;
+            }
+        }
+        Arrays.sort(result);
+        return result;
+        
+    }
+}
+
+// map.containsKey(object key)    constructor with parameter size to define capacity    map.keySet()
