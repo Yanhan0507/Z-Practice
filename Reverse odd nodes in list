@@ -1,8 +1,9 @@
-//  keep the odd node in order, and reverse the even nodes.	
-//  1 : L1 -> L2 -> L3 -> … -> L2N :  L1 -> L2N -> L3 -> L2N-2 -> ... -> L2
-//  2:  L1 -> L2 -> L3 -> … -> L2N -> L2N+1 : L1 ->L2N -> L3 - > L2N-2 ->L5 ->L2N-4 -> L7 ... ->  L2 -> L2N+1
-//  1 2 3 4 5 6 -> 1 6 3 4 5 2
-//  1 2 3 4 5 6 7 -> 1 6 3 4 5 2 7
+/*  keep the odd node in order, and reverse the even nodes.	
+    1 : L1 -> L2 -> L3 -> … -> L2N :  L1 -> L2N -> L3 -> L2N-2 -> ... -> L2
+    2:  L1 -> L2 -> L3 -> … -> L2N -> L2N+1 : L1 ->L2N -> L3 - > L2N-2 ->L5 ->L2N-4 -> L7 ... ->  L2 -> L2N+1
+    1 2 3 4 5 6 -> 1 6 3 4 5 2
+    1 2 3 4 5 6 7 -> 1 6 3 4 5 2 7
+*/
 
 public class Solution {
 	    public void reorderList(ListNode head) {
@@ -42,15 +43,14 @@ public class Solution {
 	        head = newHead;
 	    }
 	
-	
 	public void show(ListNode head){
 		while(head != null){
 			System.out.println(head.val);
 			head = head.next;
 		}
 	}
+	
 	public static void main(String[] args){
-
 		Solution s = new Solution();
 		ListNode head = new ListNode(1);
 		ListNode n1 = new ListNode(2);
