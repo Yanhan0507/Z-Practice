@@ -1,0 +1,71 @@
+
+public class Solution {
+/*
+	Given a singly linked list L: L0→L1→…→Ln-1→Ln,
+	reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…
+
+	You must do this in-place without altering the nodes' values.
+
+	For example,
+	Given {1,2,3,4}, reorder it to {1,4,2,3}.
+ */
+// 3 steps: find mid -> reverse second half list -> combine it together
+
+	public void reorderList(ListNode head) {
+		if(head == null || head.next == null){
+			return;
+		}
+		ListNode first = head;
+		ListNode second = head;
+		while(second.next!=null && second.next.next!=null){
+			second = second.next.next;
+			first = first.next;
+		}
+		ListNode cur = first.next;
+		first.next = null;
+		ListNode prev = null;
+		while(cur != null){
+			ListNode tmp = cur.next;
+			cur.next = prev;
+			prev = cur;
+			cur = tmp;
+		}
+		ListNode head2 = prev;
+		ListNode newHead = head;
+		while(head2 != null){
+			ListNode tmp = head2.next;
+			head2.next = head.next;
+			head.next = head2;
+			head = head2.next;
+			head2 = tmp;
+		}
+		head = newHead;
+	}
+	
+	public void show(ListNode head){
+		while(head != null){
+			System.out.println(head.val);
+			head = head.next;
+		}
+	}
+	public static void main(String[] args){
+
+		Solution s = new Solution();
+		ListNode head = new ListNode(1);
+		ListNode n1 = new ListNode(2);
+		ListNode n2 = new ListNode(3);
+		ListNode n3 = new ListNode(4);
+		ListNode n4 = new ListNode(5);
+		ListNode n5 = new ListNode(6);
+		ListNode n6 = new ListNode(7);
+		head.next = n1;
+		n1.next = n2;
+		n2.next = n3;
+		n3.next = n4;
+		n4.next = n5;
+		n5.next = n6;
+		n6.next = null;
+		s.reorderList(head);
+		s.show(head);
+	}
+}
