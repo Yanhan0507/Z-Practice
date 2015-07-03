@@ -15,7 +15,7 @@ public class Solution {
             for(int j=0; j<board[i].length; j++){
                                                                         // if(board[i][j] == '.'){
                                                                         //     continue;
-                                                                        // }  board[i][j] and board[j][i] are different
+                                                                        // }  is wrong. cuz board[i][j] and board[j][i] are different
                 if(board[i][j] != '.' && !rowSet.add(board[i][j]) ){
                     return false;
                 }
