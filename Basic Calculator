@@ -12,7 +12,8 @@
 
 
 // 1 divide the infix to a List<String>, remove the " " and recognize all nums
-// 2 use a stack to build the postfix expression
+// 2 use a stack to build the postfix expression, to support * and / is not that hard, 
+// just add more is statement for priority in this step.
 // 3 use a stack to calculate the postfix expression
 
 
