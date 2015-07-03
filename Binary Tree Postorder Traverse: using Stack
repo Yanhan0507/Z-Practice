@@ -21,7 +21,7 @@ return [3,2,1].
  * }
  */
  
- // using variable prev is a smart track to make sure both left child and right child have already been visited
+ // using variable prev is a smart trick to make sure both left child and right child have already been visited
  // another solution is to keep a map or flag to record state for each node. Anyway, we need to notice that one node 
  // can be visted only if both of its children has been visited or null.
  
