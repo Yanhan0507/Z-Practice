@@ -1,0 +1,81 @@
+public class Solution {
+
+    // this way is actually very efficient and easy to understand, but there are still reudundant computation. 
+    // I remove these redundancy in countPrimes1  (5 is a prime number, not necessary to mark off  2*5 3*5 4*5= 2*2*5, cuz
+    // these numbers must have already been marked off. So for each new prime, we only need to mark off p*p, p*p + p, p*p + 2p
+    
+    public int countPrimes(int n) {
+        // the number k is only possible divisible for the number less than k, therefore, if all nums has not marked off for k,         // k should be a primes
+        boolean[] record = new boolean[n];
+        for(int i=2; i<record.length; i++){
+            record[i] = true;
+        }
+        for(int i=2; i*i <n; i++){
+            if(!record[i]){
+                continue;
+            }
+            for(int k=2; i*k<n; k++){
+                record[i*k] = false;                            // record[i*k] = false
+            }
+        }
+        int num = 0;
+        for(int i = 0; i< record.length; i++){
+            if(record[i]){
+                num++;
+            }
+        }
+        return num;
+    }
+    
+    
+    public int countPrimes1(int n) {
+        // the number k is only possible divisible for the number less than k, therefore, if all nums has not marked off for k,         // k should be a primes
+        boolean[] record = new boolean[n];
+        for(int i=2; i<record.length; i++){
+            record[i] = true;
+        }
+        for(int i=2; i*i <n; i++){
+            if(!record[i]){
+                continue;
+            }
+            
+            for(int k = i*i; k < n;  k += i){
+                record[k] = false;                      
+            }
+        }
+        int num = 0;
+        for(int i = 0; i< record.length; i++){
+            if(record[i]){
+                num++;
+            }
+        }
+        return num;
+    }
+    
+    // a trival solution
+    
+        public int countPrimes(int n) {
+        int num = 0;
+        for(int i=2; i<n ;i++){
+            if(isPrime(i)){
+                num++;
+            }
+        }
+        return num;
+    }
+    
+    public boolean isPrime(int n){
+        if(n == 1){
+            return false;
+        }
+        int sum = (int)Math.sqrt(n) ;
+        for(int i = 2; i <= sum; i++){       // 2 -> sqrt(n)
+            if(n%i == 0){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    
+}
