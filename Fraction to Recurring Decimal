@@ -1,0 +1,50 @@
+public class Solution {
+
+/*
+  Given two integers representing the numerator and denominator of a fraction, return the fraction in string format.
+  
+  If the fractional part is repeating, enclose the repeating part in parentheses.
+  
+  For example,
+  
+  Given numerator = 1, denominator = 2, return "0.5".
+  Given numerator = 2, denominator = 1, return "2".
+  Given numerator = 2, denominator = 3, return "0.(6)".
+*/
+    public String fractionToDecimal(int numerator, int denominator) {
+        // cuz the remainder can be very long, so we need to convert it to long
+        // denominator does not need to be long, but in order to avoid the type cast, we better convert it as well
+        // we just need to record remainder
+        Map<Long, Integer> map = new HashMap<Long, Integer>();
+        long num = Math.abs((long)numerator);   // for Integer.MIN_VALUE. It should be like Math.abs((long)numerator),                                                          // rather than (long)Math.abs(numerator)
+        long dem = Math.abs((long)denominator);
+        if(num == 0 || dem == 0){
+            return "0";
+        }
+        StringBuilder result = new StringBuilder();
+        String sign = (numerator>0 == denominator>0)? "":"-";
+        result.append(sign);
+        result.append(num/dem);
+        num = num%dem;
+        if(num == 0){
+            return result.toString();
+        }
+        result.append(".");
+        map.put(num, result.length());
+        while(num != 0){
+            num *= 10;
+            result.append(num/dem);
+            num = num%dem;
+            if(map.containsKey(num)){
+                result.insert(map.get(num), "(");
+                result.append(")");
+                break;
+            }
+            else{
+                map.put(num, result.length());
+            }
+        }
+        return result.toString();
+        
+    }
+}
