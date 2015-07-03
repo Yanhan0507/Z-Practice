@@ -41,10 +41,36 @@ public class Solution {
         return true;
     }
 
-// unluckily, we need to initialize the char[] map, and thus, the method below may not work well in some cases 
-// if the s and t has the space element(' '), then the method will not work well;
 
-    public boolean isIsomorphic1(String s, String t) {
+// containsValue() method can basically replace the HashSet<Character> used
+
+
+  public boolean isIsomorphic(String s, String t) {
+      Map<Character, Character> map = new HashMap<Character, Character>(s.length());
+      for(int i=0; i<s.length(); i++){
+          if( !map.containsKey(s.charAt(i)) ){
+              if(map.containsValue(t.charAt(i))){
+                      return false;
+              }
+              map.put(s.charAt(i), t.charAt(i));
+          }
+          else{
+                char ch = map.get(s.charAt(i));
+                if(ch != t.charAt(i)){
+                    return false;
+                }
+          }
+      }
+      return true;
+  }
+
+
+
+//  Usually we can use O(255) space. 
+//  But unluckily, we need to initialize the char[] map, and thus, the method below may not work well in some cases 
+//  if the s and t has the space element(' '), then the method will not work well;
+
+    public boolean isIsomorphic2(String s, String t) {
         char[] map = new char[255];
         int[] used = new int[255];
         for(int i = 0; i < 255; i++){
