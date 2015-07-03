@@ -17,10 +17,34 @@ public class Solution {
   You may assume both s and t have the same length.
 */
 
-// unluckily, we need to initialization the char[] map, and in this case, 
-// if the s and t has the space, then the method will not work well;
+// remember to used a set so that no element has been mapped to twice
 
-    public boolean isIsomorphic(String s, String t) {
+ public boolean isIsomorphic(String s, String t) {
+        Map<Character, Character> map = new HashMap<Character, Character>(s.length());
+        Set<Character> used = new HashSet<Character>(s.length());
+        
+        for(int i=0; i<s.length(); i++){
+            if( !map.containsKey(s.charAt(i)) ){
+                if(used.contains(t.charAt(i))){
+                        return false;
+                }
+                used.add(t.charAt(i));
+                map.put(s.charAt(i), t.charAt(i));
+            }
+            else{
+                  char ch = map.get(s.charAt(i));
+                  if(ch != t.charAt(i)){
+                      return false;
+                  }
+            }
+        }
+        return true;
+    }
+
+// unluckily, we need to initialize the char[] map, and thus, the method below may not work well in some cases 
+// if the s and t has the space element(' '), then the method will not work well;
+
+    public boolean isIsomorphic1(String s, String t) {
         char[] map = new char[255];
         int[] used = new int[255];
         for(int i = 0; i < 255; i++){
