@@ -11,9 +11,9 @@
 */
 
 
-// 1 divide the infix to a List<String>, removing the " " and recognizing all nums
-// 2 using stack to build the postfix expression
-// 3 using stack to calculate the postfix expression
+// 1 divide the infix to a List<String>, remove the " " and recognize all nums
+// 2 use a stack to build the postfix expression
+// 3 use a stack to calculate the postfix expression
 
 
 public class Solution {
