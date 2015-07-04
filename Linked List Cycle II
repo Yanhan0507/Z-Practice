@@ -1,0 +1,58 @@
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    
+    // a little bit tricky. Assuming the length (the number of edges) of cycle is C, and the distance between head and the
+    // the start nodes is K. Then when the slow node reach the start Nodes (already traveled K units), the fast node already K 
+    // steps behind the start node (already traveled 2K units). Therefore, the slow guy is actually lead the faster guy by C-K, 
+    // or behind the faster guy by K steps. So when the fast guy catch up the slow guy, the fast guy should continue to travel 
+    // by 2(C-K) and slow guy should continue to travel by C-K. Therefore, at this time, the point they meet at, is just C-K distance 
+    // from start point. And they keep going K unit, they will come to start point again. Remeber that the K is defined by the 
+    // distance between head and start point and cycle. So at this time, we use one pointer to start from head, and the 
+    // fast/slow pointer keep going. So they will meet at the start point, the point we want.
+    
+    public ListNode detectCycle(ListNode head) {
+        ListNode fast = head;
+        ListNode slow = head;
+        while(fast!=null && fast.next!=null){
+            fast = fast.next.next;
+            slow = slow.next;
+            if(fast == slow){
+                break;
+            }
+        }
+        if(fast == null || fast.next == null){
+            return null;
+        }
+        ListNode first = head;
+        while(first != fast){
+            first = first.next;
+            fast = fast.next;
+        }
+        return first;
+        
+    }
+    
+    // ez to implement, but cost O(n) space and use advanced structure
+    
+    public ListNode detectCycle1(ListNode head) {
+        Set<ListNode> visited = new HashSet<ListNode>();
+        while(head != null){
+            if(visited.contains(head)){
+                return head;
+            }
+            visited.add(head);
+            head = head.next;
+        }
+        return null;
+    }
+}
