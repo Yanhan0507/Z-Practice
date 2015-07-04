@@ -1,0 +1,32 @@
+/*
+	Sort a linked list using insertion sort.
+*/
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+ // dummy node can be uueful when we dont want to treat head as a special node
+ // so dummy can be prev each time, and we can use while(cur!=null)
+public class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        ListNode dummy = new ListNode(-1);
+        dummy.next = null;
+        while(head != null){
+            ListNode prev = dummy;
+            ListNode cur = prev.next;
+            while(cur != null && cur.val < head.val ){
+                cur = cur.next;
+                prev = prev.next;
+            }
+            ListNode record = head.next;
+            head.next = cur;
+            prev.next = head;
+            head = record;
+        }
+        return dummy.next;
+    }
+}
