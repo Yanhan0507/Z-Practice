@@ -1,0 +1,68 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+ /*
+      Given a singly linked list where elements are sorted in ascending order, convert it to a height balanced BST.
+ */
+public class Solution {
+    // using O(n) + O(logn) space and O(n) time, and ez to implement
+    public TreeNode sortedListToBST(ListNode head) {
+        List<ListNode> list = new ArrayList<ListNode>();
+        ListNode cur = head;
+        while(cur != null){
+            list.add(cur);
+            cur = cur.next;
+        }
+        return buildTree(list, 0, list.size() - 1);
+    }
+    
+    private TreeNode buildTree(List<ListNode> list, int start, int end){
+        if(start > end){
+            return null;
+        }
+        int mid = (start + end)/2;
+        TreeNode root = new TreeNode(list.get(mid).val);
+        root.left = buildTree(list, start, mid - 1);
+        root.right = buildTree(list, mid + 1, end);
+        return root;
+    }
+    
+    // using O(logn) stack space, but O(n^2) time complexity
+    public TreeNode sortedListToBST1(ListNode head) {
+        if(head == null){
+            return null;
+        }
+        ListNode prev = null;
+        ListNode mid = head;
+        ListNode rear = head;
+        while(rear.next != null && rear.next.next != null){
+            prev = mid;
+            mid = mid.next;
+            rear = rear.next.next;
+        }
+         rear = mid.next;
+        if(prev != null){
+            prev.next = null;
+            prev = head;                                            // notice that prev can be different with head
+        }
+        mid.next = null;
+        TreeNode root = new TreeNode(mid.val);
+        root.left = sortedListToBST(prev);
+        root.right = sortedListToBST(rear);
+        return root;
+    }
+}
