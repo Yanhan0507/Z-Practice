@@ -1,0 +1,54 @@
+import java.util.Stack;
+
+public class Solution{
+    Stack<Integer> pushed = new Stack<Integer>();
+    Stack<Integer> poped = new Stack<Integer>();
+    public void add(int x) {
+        pushed.push(x);
+    }
+
+    // Removes the element on top of the stack.
+    public void dequeue() {
+        if( !poped.empty() ){
+            poped.pop();
+        }
+        else{
+            while(!pushed.empty()){
+                poped.push(pushed.pop());
+            }
+        }
+    }
+
+    // Get the top element.
+    public int first() {
+        if( !poped.empty() ){
+            return poped.peek();
+        }
+        else{
+            while(!pushed.empty()){
+                poped.push(pushed.pop());
+            }
+        }
+        return poped.peek();
+    }
+
+    // Return whether the stack is empty.
+    public boolean empty() {
+        return poped.empty() && pushed.empty();
+    }
+    
+    public static void main(String[] args){
+    	Solution s = new Solution();
+    	s.add(1);
+    	s.add(2);
+    	s.add(3);
+    	System.out.println(s.first());
+    	s.dequeue();
+    	System.out.println(s.first());
+    	System.out.println(s.empty());
+    	s.dequeue();
+    	System.out.println(s.empty());
+    	s.dequeue();
+    	System.out.println(s.empty());
+    }
+}
