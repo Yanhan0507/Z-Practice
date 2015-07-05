@@ -1,0 +1,28 @@
+/*
+  Given n, how many structurally unique BST's (binary search trees) that store values 1...n?
+  
+  For example,
+  Given n = 3, there are a total of 5 unique BST's.
+*/
+
+public class Solution {
+    public int numTrees(int n) {
+        int[][] M = new int[n][n];
+        return numTrees(0, n-1, M);
+    }
+    
+    public int numTrees(int start, int end, int[][] M){
+        if(start >= end){   // pay attention this this trival statement, dont write like start <= end
+            return 1;
+        }
+        if(M[start][end] != 0){
+            return M[start][end];
+        }
+        int counter = 0;
+        for(int i=start; i<=end; i++){
+            counter += numTrees(start, i-1, M) * numTrees(i+1, end, M);
+        }
+        M[start][end] = counter;
+        return M[start][end];
+    }
+}
