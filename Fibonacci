@@ -33,7 +33,7 @@ public class Solution {
 		return helper(n, M);
 	}
 	
-	public int helper(int n, int[] M){
+	private int helper(int n, int[] M){
 		if(M[n] != 0){
 			return M[n];
 		}
