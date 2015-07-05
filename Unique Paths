@@ -1,0 +1,31 @@
+public class Solution {
+    // using 2D array
+    public int uniquePaths1(int m, int n) {
+        int[][] board = new int[m][n];
+        for(int i = 0; i < m; i++){
+            board[i][0] = 1;
+        }
+        for(int i = 0; i < n; i++){
+            board[0][i] = 1;
+        }
+        for(int i = 1; i < m; i++){
+            for(int j = 1; j < n; j++){
+                board[i][j] = board[i-1][j] + board[i][j-1];
+            }
+        }
+        return board[m-1][n-1];
+    }
+    // a more efficient way: using one 1D array
+    public int uniquePaths(int m, int n) {
+        int[] record = new int[n];
+        for(int i = 0; i < n; i++){
+            record[i] = 1;
+        }
+        for(int i = 1; i < m; i++){        // we can use two 1D array which is easier to understand, but actually we dont need 2 array in this case, cuz we can update the element immediately
+            for(int j = 1; j < n; j++){  // if j == 0, we just let record[j] = record[j], and thus, do not need to compute
+                record[j] = record[j] + record[j-1];
+            }
+        }
+        return record[n-1];
+    }
+}
