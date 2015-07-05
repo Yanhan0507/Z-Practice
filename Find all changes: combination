@@ -5,7 +5,7 @@
 
 // notice that it is combination not permutation, also, necessary to use two dimensional array, rather than one dimensional
 // I have commented my first time wrong solution in the downmost. when we call 10 + helper(15), it will update 
-/  /M[15] = 4 (5+5+5, 5+5+5*1, 5+10*1, 1*15) but actually it lose the 10+5 and 10+1+1+1+1+1
+// M[15] = 4 (5+5+5, 5+5+5*1, 5+10*1, 1*15) but actually it lose the 10+5 and 10+1+1+1+1+1
 
 
 // optimal DP solution
