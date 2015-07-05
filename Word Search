@@ -1,0 +1,85 @@
+public class Solution {
+    public boolean exist(char[][] board, String word) {
+        boolean[][] marked = new boolean[board.length][board[0].length];
+        for(int row = 0; row < board.length; row++){
+            for(int column = 0; column < board[row].length; column++){
+                if(helper(board, row, column, 0, word, marked)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public boolean helper(char[][] board, int row, int column, int index, String word, boolean[][] marked){
+        if(index == word.length()){
+            return true;
+        }
+        if(row < 0 || row >= board.length || column < 0 || column >= board[row].length || marked[row][column]
+        || board[row][column] != word.charAt(index)){
+            return false;
+        }
+//        marked[row][column] = true;
+//        boolean left = helper(board, row-1, column, index + 1, word, marked);
+//        boolean right = helper(board, row+1, column, index + 1, word, marked);
+//        boolean up = helper(board, row, column+1, index + 1, word, marked);
+//        boolean down = helper(board, row, column-1, index + 1, word, marked);
+//        marked[row][column] = false;
+//        return left || right || up || down;
+//	      the above commented code will work, but much more efficient 
+//		  to implement in the following way:
+        marked[row][column] = true;
+        boolean result = helper(board, row-1, column, index + 1, word, marked) || helper(board, row+1, column, index + 1, word, marked) || helper(board, row, column+1, index + 1, word, marked) || helper(board, row, column-1, index + 1, word, marked);
+        marked[row][column] = false;
+        return result;
+    }
+    
+    public static void main(String[] args){
+    	Solution s = new Solution();
+    	char[][] board = {{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}};
+    	String word1 = "ABCCED";
+    	String word2 = "SEE";
+    	String word3 = "ABCB";
+    	System.out.println(s.exist(board, word1));
+    	System.out.println(s.exist(board, word2));
+    	System.out.println(s.exist(board, word3));
+    }
+}
+
+// also, we can use a global boolean variable, once we find one solution, e can quickly stop all branches:
+/*
+public class Solution {
+    boolean flag = false;
+    public boolean exist(char[][] board, String word) {
+        boolean[][] marked = new boolean[board.length][board[0].length];
+        for(int row = 0; row < board.length; row++){
+            for(int column = 0; column < board[row].length; column++){
+                if(helper(board, row, column, 0, word, marked)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public boolean helper(char[][] board, int row, int column, int index, String word, boolean[][] marked){
+        if(flag){
+            return true;
+        }
+        if(index == word.length()){
+            return true;
+        }
+        if(row < 0 || row >= board.length || column < 0 || column >= board[row].length || marked[row][column]
+        || board[row][column] != word.charAt(index)){
+            return false;
+        }
+        marked[row][column] = true;
+        boolean result = helper(board, row-1, column, index + 1, word, marked) || helper(board, row+1, column, index + 1, word, marked) || helper(board, row, column+1, index + 1, word, marked) || helper(board, row, column-1, index + 1, word, marked);
+        marked[row][column] = false;
+        if(result){
+            flag = true;
+        }
+        return result;
+    }
+}
+*/
