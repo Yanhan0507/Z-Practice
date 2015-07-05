@@ -1,0 +1,55 @@
+/*
+  Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numbers on the row below.
+  
+  For example, given the following triangle
+  [
+       [2],
+      [3,4],
+     [6,5,7],
+    [4,1,8,3]
+  ]
+  The minimum path sum from top to bottom is 11 (i.e., 2 + 3 + 5 + 1 = 11).
+  
+  Note:
+  Bonus point if you are able to do this using only O(n) extra space, where n is the total number of rows in the triangle.
+*/
+
+// using O(N^2) space + O(N) stack space, and O(N) time
+public class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        Integer[][] M = new Integer[triangle.size()][triangle.size()];
+        return minimumTotal(triangle, M, 0, 0, 0);
+    }
+    private int minimumTotal(List<List<Integer>> triangle, Integer[][] M, int row, int column, int sum){
+        if(row == triangle.size()){
+            return 0;
+        }
+        if(M[row][column] != null){
+            return M[row][column];
+        }
+        int val = triangle.get(row).get(column);
+        M[row][column] = triangle.get(row).get(column) 
+        + Math.min(minimumTotal(triangle, M, row+1, column, sum+val), minimumTotal(triangle, M, row+1, column+1, sum+val) );
+        return M[row][column];
+    }
+}
+
+// brute force: expoential time but O(N) stack space
+// public class Solution {
+//     int path = Integer.MAX_VALUE;
+//     public int minimumTotal(List<List<Integer>> triangle) {
+//         minimumTotal(triangle, 0, 0, 0);
+//         return path;
+//     }
+//     private void minimumTotal(List<List<Integer>> triangle, int row, int column, int sum) {
+//         if(row == triangle.size()){
+//             if(sum < path){
+//                 path = sum;
+//             }
+//             return;
+//         }
+//         List<Integer> list = triangle.get(row);
+//         minimumTotal(triangle, row+1, column, sum+list.get(column));
+//         minimumTotal(triangle, row+1, column + 1, sum+list.get(column));
+//     }
+// }
