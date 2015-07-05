@@ -14,8 +14,9 @@
   Bonus point if you are able to do this using only O(n) extra space, where n is the total number of rows in the triangle.
 */
 
-// using O(N^2) space + O(N) stack space, and O(N) time
+
 public class Solution {
+// using O(N^2) space + O(N) stack space, and O(N^2) time
     public int minimumTotal(List<List<Integer>> triangle) {
         Integer[][] M = new Integer[triangle.size()][triangle.size()];
         return minimumTotal(triangle, M, 0, 0, 0);
@@ -33,7 +34,24 @@ public class Solution {
         return M[row][column];
     }
 }
-
+// using O(n) space and O(n^2) time
+    public int minimumTotal1(List<List<Integer>> triangle) {
+        List<Integer> result = new ArrayList<Integer>();
+        int size = triangle.size() - 1;
+        for(int i=0; i<=size; i++){
+           result.add(triangle.get(size).get(i));
+        }
+        for(int i = triangle.size() - 2; i >= 0; i--){
+            for(int j = 0; j <= i; j++){
+                int val = triangle.get(i).get(j);
+                val += Math.min(result.get(j), result.get(j+1));
+                result.set(j, val);
+            }
+        }
+        return result.get(0);
+    }
+    
+    
 // brute force: expoential time but O(N) stack space
 // public class Solution {
 //     int path = Integer.MAX_VALUE;
