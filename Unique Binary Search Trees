@@ -6,6 +6,8 @@
 */
 
 public class Solution {
+
+    // using 2D dimensional array 
     public int numTrees(int n) {
         int[][] M = new int[n][n];
         return numTrees(0, n-1, M);
@@ -24,5 +26,23 @@ public class Solution {
         }
         M[start][end] = counter;
         return M[start][end];
+    }
+    
+    // another solution: using 1D array (based on the fact that the number of trees for 0-2 is the same as 2-4. 
+    // so all of them can be considered as M[2])
+    
+    public int numTrees(int n) {
+        int[] M = new int[n + 1];                  // M[0] stands for zero node int this subtree, M[1] stands for one node
+        if(n == 0 || n == 1){
+            return n;
+        }
+        M[0] = 1;
+        M[1] = 1;
+        for(int i=2; i<=n; i++){
+            for(int j=0;j <=i-1;j++){                        // we used one node, so it's from 0 -> i-1
+                M[i] += M[j]*M[i - j - 1];                   // remeber it is * rather than +,
+            }
+        }
+        return M[n];
     }
 }
