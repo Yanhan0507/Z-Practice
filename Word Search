@@ -46,7 +46,7 @@ public class Solution {
     }
 }
 
-// also, we can use a global boolean variable, once we find one solution, e can quickly stop all branches:
+// also, we can use a global boolean variable, once we find one solution, we can quickly stop all branches:
 /*
 public class Solution {
     boolean flag = false;
