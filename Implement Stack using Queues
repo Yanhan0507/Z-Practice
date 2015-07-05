@@ -53,3 +53,46 @@ class MyStack {
         return queue1.isEmpty() && queue2.isEmpty();
     }
 }
+
+/* 
+   // The second way to implement MyStack. O(1) for push top and empty, O(n) for pop(): 
+   // every time we keep exactly one element in queue2, unless it's empty
+class MyStack {
+    // Push element x onto stack.
+    LinkedList<Integer> queue1 = new LinkedList<Integer>();
+    LinkedList<Integer> queue2 = new LinkedList<Integer>();
+    public void push(int x) {
+        if(!queue2.isEmpty()){
+            queue1.add(queue2.poll());
+        }
+        queue2.add(x);
+    }
+
+    // Removes the element on top of the stack.
+    public void pop() {
+        queue2.poll();
+        if(queue1.isEmpty()){  
+            return;
+        }
+        int last = queue1.poll();
+        while(!queue1.isEmpty()){
+            queue2.add(last);
+            last = queue1.poll();
+        }
+        queue1.add(last);
+        LinkedList<Integer> tmp = queue1;
+        queue1 = queue2;
+        queue2 = tmp;
+    }
+
+    // Get the top element.
+    public int top() {
+        return queue2.peek();
+    }
+
+    // Return whether the stack is empty.
+    public boolean empty() {
+        return queue1.isEmpty() && queue2.isEmpty();
+    }
+}
+*/
