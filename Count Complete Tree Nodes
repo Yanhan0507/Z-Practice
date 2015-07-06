@@ -1,0 +1,86 @@
+/*
+  Given a complete binary tree, count the number of nodes.
+  
+  Definition of a complete binary tree from Wikipedia:
+  In a complete binary tree every level, except possibly the last, 
+  is completely filled, and all nodes in the last level are as far left as possible. 
+  It can have between 1 and 2h nodes inclusive at the last level h.
+*/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+ 
+ // the height is defined by left child. So the fully complete tree is treated by leaves = 2^(h-1)+1, 
+ // then plus 1(current node), then plus 2^(level - 1) - 1
+public class Solution {
+    public int countNodes(TreeNode root) {
+        if(root == null){
+            return 0;
+        }
+        return countNodes(root, 1, 0);
+    }
+    
+    public int countNodes(TreeNode root, int level, int leaves) {
+        if(root.left == null && root.right == null){
+            return (int)Math.pow(2, level-1) - 1 + leaves + 1;
+        }
+        if(getHeight(root.left) != getHeight(root.right)){
+            return countNodes(root.left, level+1, leaves);
+        }
+        else{
+            leaves += (int) Math.pow(2 , getHeight(root.left) - 1 );
+            return countNodes(root.right, level+1, leaves);
+        }
+    }
+    
+    public int getHeight(TreeNode root){
+        int height = 0;
+        while(root != null){
+            height++;
+            root = root.left;
+        }
+        return height;
+    }
+}
+
+ // the height is defined by right child
+ // the fully complete tree(can be also seen as a tree whose next level is empty) 
+ // is treated by leaves = 0, level = h, 2^h-1
+public class Solution {
+    public int countNodes(TreeNode root) {
+        if(root == null){
+            return 0;
+        }
+        return countNodes(root, 1, 0);
+    }
+    private int countNodes(TreeNode root, int level, int leaves){
+        if(root.left == null || root.right == null){
+            return (int)Math.pow(2,level) - 1 + leaves + (root.left == null? 0:1);
+        }
+        int left = getHeight(root.left);
+        int right = getHeight(root.right);
+        if(left != right){
+            leaves += Math.pow(2 , left - 1);
+            return countNodes(root.right, level+1, leaves);
+        }
+        else{
+            return countNodes(root.left, level+1, leaves);
+        }
+    }
+    
+    private int getHeight(TreeNode root){
+        int height = 0;
+        while(root != null){
+            root = root.right;
+            height ++;
+        }
+        return height;
+    }
+}
