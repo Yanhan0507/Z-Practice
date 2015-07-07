@@ -2,7 +2,7 @@ public class Solution {
     public List<List<Integer>> fourSum(int[] nums, int target) {
         Arrays.sort(nums);
         Set<List<Integer>> set = new HashSet<List<Integer>>();
-        for(int i = 0; i <= nums.length - 4; i++){
+        for(int i = 0; i <= nums.length - 4; i++){    // make sure last time is [length-4]+[length-3]+[length-2]+[length-1]
             for(int j = i+1; j <= nums.length - 3; j++){
                 int start = j + 1;
                 int end = nums.length - 1;
