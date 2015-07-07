@@ -1,0 +1,35 @@
+public class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        Arrays.sort(nums);
+        Set<List<Integer>> set = new HashSet<List<Integer>>();
+        for(int i = 0; i <= nums.length - 4; i++){
+            for(int j = i+1; j <= nums.length - 3; j++){
+                int start = j + 1;
+                int end = nums.length - 1;
+                int value = target - nums[i] - nums[j];
+                while(start < end){
+                    if(nums[start] + nums[end] == value){
+                        List<Integer> list = new ArrayList<Integer>();
+                        list.add(nums[i]);
+                        list.add(nums[j]);
+                        list.add(nums[start]);
+                        list.add(nums[end]);
+                        set.add(list);
+                        end--;  
+                        start++;         //    start++/end-- is equivalent here. Cuz it's combination
+                                         //    in other words, if nums[start] + nums[end] == value both nums[start]
+                                         //    and nums[end] should be changed together so that we can possible find one more 
+                                         //    solution. In this sense, start++/end--/star++ and end-- both work fine here
+                    }
+                    else if(nums[start] + nums[end] > value){
+                        end--;
+                    }
+                    else{
+                        start++;
+                    }
+                }
+            }
+        }
+        return new ArrayList<List<Integer>>(set);
+    }
+}
