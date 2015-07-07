@@ -1,0 +1,75 @@
+public class Solution {
+    // space efficient way, dont worry to change some border element values at the beginning, 
+    // cuz we need to change these elements to 0.
+    
+    public void setZeroes(int[][] matrix){
+        boolean firstColumn = false;
+        boolean firstRow = false;
+        for(int i = 0; i < matrix.length; i++){
+            if(matrix[i][0] == 0){
+                firstColumn = true;
+            }
+        }
+        for(int i = 0; i < matrix[0].length; i++){
+            if(matrix[0][i] == 0){
+                firstRow = true;
+            }
+        }
+        for(int i=0;i<matrix.length; i++){
+            for(int j=0; j<matrix[i].length; j++){
+                if(matrix[i][j] == 0){
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
+                }
+            }
+        }
+        for(int i=1; i<matrix.length; i++){
+            if(matrix[i][0] == 0){
+                for(int j = 1; j < matrix[i].length; j++){
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        for(int i=1; i<matrix[0].length; i++){
+            if(matrix[0][i] == 0){
+                for(int j = 1; j < matrix.length; j++){
+                    matrix[j][i] = 0;
+                }
+            }
+        }
+        if(firstColumn){
+            for(int i=0;i<matrix.length;i++){
+                matrix[i][0] = 0;
+            }
+        }
+        if(firstRow){
+            for(int i=0;i<matrix[0].length;i++){
+                matrix[0][i] = 0;
+            }
+        }
+    }
+    
+    // less space efficient solution: using 2N space
+    public void setZeroes1(int[][] matrix) {
+        Set<Integer> column = new HashSet<Integer>();
+        Set<Integer> row = new HashSet<Integer>();
+        for(int i=0;i<matrix.length; i++){
+            for(int j=0; j<matrix[i].length; j++){
+                if(matrix[i][j] == 0){
+                    column.add(i);
+                    row.add(j);
+                }
+            }
+        }
+        for(int c:column){
+            for(int i=0; i<matrix[c].length; i++){
+                matrix[c][i] = 0;
+            }
+        }
+        for(int r: row){
+            for(int i=0; i<matrix.length; i++){
+                matrix[i][r] = 0;
+            }
+        }
+    }
+}
