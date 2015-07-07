@@ -1,0 +1,41 @@
+public class Solution {
+    // the 1 1 2 -> 1, 1 1, 1 2, 1 1 2
+    // the strategy here is that for dumplicate elements we only pick the first one
+    // if we pick 1 _ 2, we will never pick _ 1 2, since for dumplicate elements, we only pick the first one
+    public List<List<Integer>> subsetsWithDup1(int[] nums) {
+    	Arrays.sort(nums);
+    	List<List<Integer>> result = new ArrayList<List<Integer>>();
+    	helper(nums, new ArrayList<Integer>(), 0, result);
+    	return result;
+    }
+    private void helper(int[] nums, List<Integer> list, int index, List<List<Integer>> result){
+    	result.add(new ArrayList<Integer>(list));
+    	for(int i = index; i<nums.length; i++){
+    		if(i!=index && nums[i] == nums[i-1]){
+    			continue;
+    		}
+    		list.add(nums[i]);
+			helper(nums,list,i+1,result);
+			list.remove(list.size() - 1);
+    	}
+    }
+    
+    // normal combination way, using set
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+    	Arrays.sort(nums);
+    	Set<List<Integer>> set = new HashSet<List<Integer>>();
+    	subsetsWithDup(nums, new ArrayList<Integer>(), 0, set);
+    	return new ArrayList<List<Integer>>(set);
+    }
+    
+    private void subsetsWithDup(int[] nums, List<Integer> path, int index, Set<List<Integer>> set){
+    	if(index == nums.length){
+    		set.add(new ArrayList<Integer>(path));
+    		return;
+    	}
+    	path.add(nums[index]);
+    	subsetsWithDup(nums,path,index+1,set);
+    	path.remove(path.size()-1);
+    	subsetsWithDup(nums,path,index+1,set);
+    }
+}
