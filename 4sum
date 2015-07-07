@@ -19,7 +19,7 @@ public class Solution {
                         start++;         //    start++/end-- is equivalent here. Cuz it's combination
                                          //    in other words, if nums[start] + nums[end] == value both nums[start]
                                          //    and nums[end] should be changed together so that we can possible find one more 
-                                         //    solution. In this sense, start++/end--/star++ and end-- both work fine here
+                                         //    solution. In this sense, start++/end--/star++ and end-- all work fine here
                     }
                     else if(nums[start] + nums[end] > value){
                         end--;
