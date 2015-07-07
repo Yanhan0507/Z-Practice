@@ -1,0 +1,69 @@
+public class Solution {
+    // Iterative way, using the layer to control the rectangle 
+    public List<Integer> spiralOrder1(int[][] matrix) { 
+        List<Integer> result = new ArrayList<Integer>();
+        if(matrix.length == 0){
+            return result;
+        }
+        int length = matrix[0].length - 1;
+        int width = matrix.length - 1;
+        int iterations = Math.min(length, width)/2 + 1;
+        int layer = 0;
+        while(layer < iterations){
+        	for(int i = layer; i <= length - layer; i++){
+        		result.add(matrix[layer][i]);
+        	}
+        	for(int i = layer + 1; i <= width - layer; i++){
+        		result.add(matrix[i][length-layer]);
+        	}
+        	for(int i = length - 1 - layer; i >=layer && layer != width -layer; i--){
+        		result.add(matrix[width-layer][i]);
+        	}
+        	for(int i = width - 1 - layer; i >layer && layer != length -layer; i--){
+        		result.add(matrix[i][layer]);
+        	}
+        	layer++;
+        }
+        return result;
+    }
+    // recursive way: the exit for odd and even is different
+     public List<Integer> spiralOrder(int[][] matrix) { 
+        List<Integer> result = new ArrayList<Integer>();
+        if(matrix.length == 0){
+        	return result;
+        }
+        spiralOrder(matrix, result, 0, 0, matrix[0].length-1, matrix.length-1);
+        return result;
+    } 
+    
+    private void spiralOrder(int[][] matrix, List<Integer> result, int row, int column, int right, int down){
+    	if(row>down || column>right){
+    		return;
+    	}
+    	if(row == down){
+    		for(int i = column; i<= right; i++){
+    			result.add(matrix[row][i]);
+    		}
+    		return;
+    	}
+    	else if(right == column){
+    		for(int i = row; i<=down; i++){
+    			result.add(matrix[i][right]);
+    		}
+    		return;
+    	}
+    	for(int i = column; i <= right - 1; i++){
+    		result.add(matrix[row][i]);
+    	}
+    	for(int i = row; i <= down-1; i++){
+    		result.add(matrix[i][right]);
+    	}
+    	for(int i = right; i >= column+1; i--){
+    		result.add(matrix[down][i]);
+    	}
+    	for(int i = down; i >= row+1; i--){
+    		result.add(matrix[i][column]);
+    	}
+    	spiralOrder(matrix, result, row+1, column+1, right-1, down-1);
+    }
+}
