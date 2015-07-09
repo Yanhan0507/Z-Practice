@@ -1,0 +1,44 @@
+public class Solution {
+/*
+	Given a non-negative number represented as an array of digits, plus one to the number.
+
+	The digits are stored such that the most significant digit is at the head of the list. 
+*/
+	
+// System.copyArray(srcArray, srcStart, targetArray, targetStart, length);
+    public int[] plusOne(int[] digits){
+        int carry = 1;
+        for(int i = digits.length-1; i>=0; i--){
+        	int tmp = carry + digits[i];
+        	digits[i] = tmp % 10;
+        	carry = tmp / 10;
+        }
+        if(carry == 0){
+        	return digits;
+        }
+        int[] result = new int[digits.length + 1];
+        result[0] = 1;
+        System.arraycopy(digits, 0, result, 1, digits.length);
+        return result;
+    }
+	
+    public int[] plusOne1(int[] digits) {
+        int carry = 1;
+        List<Integer> result = new LinkedList<Integer>();
+        for(int i = digits.length -1; i >= 0; i--){
+        	int tmp = digits[i] + carry;
+        	result.add(0, tmp % 10);   							// O(1) for linkedlist
+        	carry = tmp/10;
+        }
+        if(carry != 0){
+        	result.add(0, carry);
+        }
+        Iterator<Integer> it = result.iterator();              // at this point, it is the dummy head
+        int[] array = new int[result.size()];
+        int i = 0;
+        while(it.hasNext()){
+        	array[i++] = it.next();
+        }
+        return array;
+    }
+}
