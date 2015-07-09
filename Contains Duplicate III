@@ -1,0 +1,115 @@
+import java.util.TreeSet;
+
+public class Solution {
+/*
+	Given an array of integers, find out whether there are two distinct indices i and j 
+	in the array such that the difference between nums[i] and nums[j] is at most t and 
+	the difference between i and j is at most k. 
+*/
+	
+	// treeSet solution
+	// ceiling(x) return the least value which is smaller than x
+	// floor(x) return the largest value which is less than x
+	public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+		TreeSet<Integer> set = new TreeSet<Integer>();
+		for(int i=0; i<nums.length; i++){
+			if( i > k){
+				set.remove((nums[i - k - 1]));
+			}
+			Integer ceil = set.ceiling(nums[i]);
+			if(ceil!=null && (long)ceil - nums[i] <= t){
+				return true;
+			}
+			Integer floor = set.floor(nums[i]);
+			if(floor!=null && (long)nums[i] - floor <= t){
+				return true;
+			}	
+			set.add(nums[i]);
+		}
+		return false;
+	}
+	
+	// brute force way
+    public boolean containsNearbyAlmostDuplicate1(int[] nums, int k, int t) {
+        for(int i = 0; i < nums.length; i++){
+        	for(int j = i + 1; j <= i + k && j < nums.length; j++){
+        	    long x = (long)nums[i]; 
+        	    long y = (long)nums[j];
+        	    long dif = (long)Math.abs(x-y);
+        		if(dif <= t){
+        			return true;
+        		}
+        	}
+        }
+        return false;
+    }
+    
+    
+    // an interesting solution which I find online
+   
+    /*
+     class Tree {
+     
+    	int val;
+    	int index;
+    	Tree left;
+    	Tree right;
+    	Tree(int x,int y) {val=x;index=y;}
+    	}
+
+    	public class Solution {
+    	public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+    	    int n=nums.length;
+    	    if(n<2) return false;
+    	    if(k<1) return false;
+    	    Tree root=new Tree(nums[0],0);
+    	    Tree node=root;
+    	    long a=nums[0];
+    	    for(int i=1; i<n; i++) {
+    	        long b=nums[i];
+    	        if((Math.abs(b-a))<=t)
+    	            return true;
+    	        a=nums[i];
+    	    }
+    	    if(k==1) return false;
+    	    for(int i=1; i<n; i++) {
+    	        if(build_tree(node,nums[i],i,k,t))
+    	            return true;
+    	        node=root;
+    	    }
+    	    return false;
+    	}
+    	public boolean build_tree(Tree node, int num, int i, int k, int t) {
+    	    if(Math.abs(num-node.val)<=t && i-node.index<=k) 
+    	        return true;
+    	    if(num>node.val){
+    	        if(node.right==null){
+    	            Tree temp=new Tree(num,i);
+    	            node.right=temp;
+    	            return false;
+    	        }else{
+    	            return build_tree(node.right,num,i,k,t);
+    	        }
+    	    }else if(num<node.val){
+    	        if(node.left==null){
+    	            Tree temp=new Tree(num,i);
+    	            node.left=temp;
+    	            return false;
+    	        }else{
+    	            return build_tree(node.left,num,i,k,t);
+    	        }
+    	    }
+    	    else {
+    	        node.index=i;
+    	        return false;
+    	    }
+    	}
+    }
+    */
+    
+    
+    public static void main(String[] args){
+    	Solution s = new Solution();
+    	System.out.println(s.containsNearbyAlmostDuplicate(new int[]{1,10,26,48},1,6));
+    }
+}
