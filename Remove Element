@@ -1,0 +1,27 @@
+/*
+	Given an array and a value, remove all instances of that value in place and return the new length.
+	
+	The order of elements can be changed. It doesn't matter what you leave beyond the new length.
+ */
+
+public class Solution {
+//  reverse the whole array, and then reverse both first part(0,k-1) 
+//  and (k,nums.length-1) respectively
+	
+    public int removeElement(int[] nums, int val) {
+        int start = 0;
+        int end = nums.length - 1;
+        while(start <= end){
+        	if(nums[start] == val){
+            	int tmp = nums[end];
+            	nums[end] = nums[start];
+            	nums[start] = tmp;
+            	end --;  // this case we cannot move start, cuz we still need to process the new nums[start]
+        	}
+        	else{
+        		start++;
+        	}
+        }
+        return end + 1;
+    }   
+}
