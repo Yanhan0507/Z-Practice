@@ -1,0 +1,89 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+ 
+ /*
+   Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
+  
+  For example, this binary tree is symmetric:
+  
+      1
+     / \
+    2   2
+   / \ / \
+  3  4 4  3
+  But the following is not:
+      1
+     / \
+    2   2
+     \   \
+     3    3
+*/
+
+public class Solution {
+    public boolean isSymmetric1(TreeNode root) {
+        LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
+        queue.add(root);
+        while(!queue.isEmpty()){
+            LinkedList<TreeNode> tmp = new LinkedList<TreeNode>();
+            ArrayList<Integer> judge = new ArrayList<Integer>();
+            while(!queue.isEmpty()){                                          // isEmpty()
+                TreeNode cur = queue.poll();
+                if(cur == null){
+                    judge.add(null);
+                    continue;
+                }
+                judge.add(cur.val);
+                tmp.add(cur.left);
+                tmp.add(cur.right);
+            }
+            int start = 0;
+            int end = judge.size() - 1;
+            while(start < end){  
+                Integer s = judge.get(start);
+                Integer e = judge.get(end);
+                if( s==null || e == null){                            // need to handle the null case
+                    if(s != null || e != null){
+                        return false;
+                    }
+                    else{
+                        start++;
+                        end--;                                        // for this case, start, end should keep going
+                        continue;
+                    }
+                }
+                if(!s.equals(e)){                   // for two Integer, using equals
+                    return false;
+                }
+                start++;
+                end--;
+            }
+            queue = tmp;
+        }
+        return true;
+    }
+    
+    
+    public boolean isSymmetric(TreeNode root) {
+        if( root == null){
+            return true;                                                // remember to handle corner case
+        }
+        return isSymmetric(root.left, root.right);
+    }
+    
+    private boolean isSymmetric(TreeNode l, TreeNode r){
+        if(l == null && r == null){
+            return true;
+        }
+        if(( l==null && r!= null) || (l != null && r == null) || l.val != r.val){
+            return false;
+        }
+        return isSymmetric(l.left, r.right) && isSymmetric(l.right, r.left);
+    }
+}
