@@ -1,0 +1,51 @@
+/*
+  Implement next permutation, which rearranges numbers into the lexicographically next greater permutation of numbers.
+  
+  If such arrangement is not possible, it must rearrange it as the lowest possible order (ie, sorted in ascending order).
+  
+  The replacement must be in-place, do not allocate extra memory.
+  
+  Here are some examples. Inputs are in the left-hand column and its corresponding outputs are in the right-hand column.
+  1,2,3 → 1,3,2
+  3,2,1 → 1,2,3
+  1,1,5 → 1,5,1
+
+*/
+
+// 1 from right to left, find the first element(a) which violate the increase
+// 2 from right to left, find the first element(b) which is larer than the founded number(a)
+// 3 swap a and b
+// 4 reverse all elements on the right of a's index(step 1 index)
+public class Solution {
+    public void nextPermutation(int[] nums) {
+        int found = nums.length - 1;
+        while(found > 0){
+            if(nums[found - 1] < nums[found]){
+                break;
+            }
+            found--;
+        }
+        if(found > 0){
+            found -- ;
+            int change = nums.length - 1;
+            while(change >= 0 && nums[change] <= nums[found]){
+                change --;
+            }
+            int tmp = nums[change];
+            nums[change] = nums[found];
+            nums[found] = tmp;
+            found++;
+        }
+
+        
+        int start = found;
+        int end = nums.length - 1;
+        while(start < end){
+            int tmp = nums[start];
+            nums[start] = nums[end];
+            nums[end] = tmp;
+            start++;
+            end--;
+        }
+    }
+}
