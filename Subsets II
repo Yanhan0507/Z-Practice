@@ -3,6 +3,7 @@ public class Solution {
     // the strategy here is that for dumplicate elements we only pick the first one
     // if we pick 1 _ 2, we will never pick _ 1 2, since for dumplicate elements, we only pick the first one
     // in this way we can pick both 1 1 2, 1 _ 2, without picking _ 1 2, so there is no dumplicate
+    // Same Way as Combination Sum II
     public List<List<Integer>> subsetsWithDup1(int[] nums) {
     	Arrays.sort(nums);
     	List<List<Integer>> result = new ArrayList<List<Integer>>();
