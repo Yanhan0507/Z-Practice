@@ -42,3 +42,32 @@ public class Solution {
         }
     }
 }
+
+
+
+// Solution 2, dont use set
+// every time, we dont put duplicate elements
+// 有序添加 比如 1 1 1， 1， 1，1， 1，1，1 都会被加入， 但是不会有1，＊，1或者 ＊1， 1相同元素只有可能刚开始被加入
+// 所以是有序添加 没有重复
+public class Solution {
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        combinationSum(candidates, target, result, new ArrayList<Integer>(), 0);
+        return result;
+    }
+
+    private void combinationSum(int[] candidates, int target, List<List<Integer>> result, List<Integer> path, int index) {
+        if(target == 0){
+            result.add(new ArrayList<Integer>(path));
+            return;
+        }
+        for(int i = index; i < candidates.length && candidates[i] <= target ; i++){
+            if(i == index || candidates[i] != candidates[i-1]){
+                path.add(candidates[i]);
+                combinationSum(candidates, target - candidates[i], result, path, i + 1);
+                path.remove(path.size() - 1);
+            }
+        }
+    }
+}
