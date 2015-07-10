@@ -1,0 +1,71 @@
+/*
+Find the contiguous subarray within an array (containing at least one number) which has the largest sum.
+
+
+For example, given the array [−2,1,−3,4,−1,2,1,−5,4],
+the contiguous subarray [4,−1,2,1] has the largest sum = 6.
+
+click to show more practice.
+
+More practice:
+If you have figured out the O(n) solution, 
+try coding another solution using the divide and conquer approach, which is more subtle.
+*/
+
+public class Solution {
+
+	// the O(N) solution
+    public int maxSubArray1(int[] nums) {
+    	// this solution can also handle the case that all elements are negative
+        int max = Integer.MIN_VALUE;
+        int sum = 0;
+        for(int i = 0; i < nums.length; i++){
+        	sum += nums[i];
+        	if(sum > max){
+        		max = sum;
+        	}
+        	if(sum < 0){
+        		sum = 0;
+        	}
+        }
+        return max;
+    }
+    
+    // O(NlogN) divide and conquer: each time the max value from left, right, or mid.
+    public int maxSubArray(int[] nums) {
+    	return maxSubArray(nums, 0, nums.length-1);
+    }
+    
+    public int maxSubArray(int[] nums, int start, int end) {
+    
+    	if(start > end){
+    		return Integer.MIN_VALUE;
+    	}
+    	int mid = (start + end)/2;
+    	int l = maxSubArray(nums, start, mid - 1);
+    	int r = maxSubArray(nums, mid + 1, end);
+    	int lHalf = 0;
+    	int sum = 0;
+    	for(int i = mid - 1; i >= start; i--){
+    		sum += nums[i];
+    		if(sum > lHalf){
+    			lHalf = sum;
+    		}
+    	}
+    	sum = 0;
+    	int rHalf = 0;
+    	for(int i = mid + 1; i <= end; i++){
+    		sum += nums[i];
+    		if(sum > rHalf){
+    			rHalf = sum;
+    		}
+    	}
+    	return Math.max(l, Math.max(r, lHalf+rHalf+nums[mid]));
+    }
+    
+    public static void main(String[] args){
+
+    	Solution s = new Solution();
+    	
+    }
+}
