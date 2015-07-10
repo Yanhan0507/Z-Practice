@@ -1,0 +1,66 @@
+/*
+	Follow up for "Find Minimum in Rotated Sorted Array":
+	What if duplicates are allowed?
+
+	Would this affect the run-time complexity? How and why?
+	Suppose a sorted array is rotated at some pivot unknown to you beforehand.
+
+	(i.e., 0 1 2 4 5 6 7 might become 4 5 6 7 0 1 2).
+
+	Find the minimum element.
+
+	The array may contain duplicates.
+*/
+
+public class Solution {
+	
+// recursive O(N) solution, using o(logN) stack space/ worset case O(N) space
+    public int findMin(int[] nums){
+    	return findMin(nums, 0, nums.length - 1);
+    }
+    
+    private int findMin(int[] nums, int start, int end){
+    	if(start == end){
+    		return nums[start];
+    	}
+    	int mid = (start + end)/2;
+    	if(nums[mid] > nums[end]){
+    		return findMin(nums, mid + 1, end);
+    	}
+    	else if(nums[mid] < nums[end]){
+    		return findMin(nums, start, mid);  // in this case, probably, mid is the minimal element 
+    	}
+    	else{
+    		return findMin(nums, start, end-1);
+    	}
+    }
+	
+// same way, but the worst case will be O(n), 2 2 2 2 2 2 2 2 2 2 2 2 2
+// if nums[mid] == nums[end], we remove the end by end--
+    public int findMin0(int[] nums) {
+    	int start = 0;
+    	int end = nums.length - 1;
+    	while(start < end){
+    		int mid = (start + end)/2;
+    		if(nums[mid] < nums[end]){
+    			end = mid;
+    		}
+    		else if(nums[mid] > nums[end]){
+    			start = mid + 1;
+    		}
+    		else{
+    			end --;
+    		}
+    	}
+    	return nums[start];
+    }
+    // O(n) solution 
+    public int findMin1(int[] nums) {
+        for(int i = 1; i < nums.length; i++){
+            if(nums[i] < nums[i-1]){
+            	return nums[i];
+            }
+        }
+        return nums[0];
+    } 
+}
