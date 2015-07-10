@@ -49,6 +49,7 @@ public class Solution {
 // every time, we dont put duplicate elements
 // 有序添加 比如 1 1 1， 1， 1，1， 1，1，1 都会被加入， 但是不会有1，＊，1或者 ＊1， 1相同元素只有可能刚开始被加入
 // 所以是有序添加 没有重复
+// same way as Subsets II
 public class Solution {
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
         Arrays.sort(candidates);
