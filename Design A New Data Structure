@@ -1,0 +1,73 @@
+// a new structure that insert in O(logn), find the number of elements whose value less or equal to a given number
+public class Solution{
+	
+	private static TreeNode root = null;
+	
+	public int find(int x){
+		int counter = 0;
+		TreeNode tmp = root;
+		while(tmp != null){
+			if(tmp.val == x){
+				return counter + tmp.num;
+			}
+			else if(tmp.val > x){
+				tmp = tmp.left;
+			}
+			else{
+				counter += tmp.num;
+				tmp = tmp.right;
+			}
+		}
+		return counter;
+	}
+	
+	public void insert(int x){
+		if(root == null){
+			root = new TreeNode(x);
+			return;
+		}
+		TreeNode tmp = root;
+		TreeNode prev = root;
+		boolean right = false;
+		while(tmp != null){
+			prev = tmp;
+			if(tmp.val < x){
+				tmp = tmp.right;
+				right = true;
+			}
+			else{
+				tmp.num ++;
+				tmp = tmp.left;
+				right = false;
+			}
+		}
+		TreeNode newNode = new TreeNode(x);
+		if(right){
+			prev.right = newNode;
+		}
+		else{
+			prev.left = newNode;
+		}
+	}
+	
+	
+	
+    public static void main(String[] args){
+    	Solution s = new Solution();
+    	s.insert(20);
+    	s.insert(15);
+    	s.insert(10);
+    	s.insert(5);
+    	s.insert(13);
+    	s.insert(25);
+    	s.insert(23);
+    	s.insert(24);
+    	s.insert(25);
+    	System.out.println(s.find(24));
+    	System.out.println(s.find(27));
+    	System.out.println(s.find(25));
+    	System.out.println(s.find(0));
+    }
+
+
+}
