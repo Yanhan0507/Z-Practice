@@ -1,0 +1,11 @@
+Imagine you have a 20GB file with one string per line. Explain how you would sort the file.
+
+Just like hadoop:
+
+divide the file into several parts, like each part has 100 mega bytes. Then sort each of them in differenct machine. 
+Finally, we merge them together. Basically it's like merge sort.
+
+Standard solution: (concurrency system)
+We will divide the file into several chunks, which has x megabytes each, where x is the amount of memory available. 
+Each chunk/part are sorted separately, and then save back to the file system/ hard drive. 
+Once all chunks are sortes, we merge them together, one by one. Finally, we get a fully sorted file.
