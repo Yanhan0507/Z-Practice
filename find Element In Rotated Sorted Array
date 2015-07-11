@@ -1,3 +1,4 @@
+// find the minimal element, then binary search in each part
 public class Solution{
 	
 	public int findElementInRotatedArray(int[] array, int target){
