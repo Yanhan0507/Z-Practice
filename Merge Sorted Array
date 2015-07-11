@@ -30,3 +30,27 @@ public class Solution {
         }
     }
 }
+
+// in this way, we dont need to rearrange this nums[1], just simply start from m + n -1
+// but we need to handle the corner case that nums2.length == 0
+
+public class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        if(nums2.length == 0){
+            return;
+        }
+        int length = m + n - 1;
+        int i = m - 1;
+        int j = n - 1;
+        while(i >= 0 || j >=0){
+            int x = i >= 0 ? nums1[i]: Integer.MIN_VALUE;
+            int y = j >= 0 ? nums2[j]: Integer.MIN_VALUE;
+            if(x > y){
+                nums1[length--] = nums1[i--];
+            }
+            else{
+                nums1[length--] = nums2[j--];
+            }
+        }
+    }
+}
