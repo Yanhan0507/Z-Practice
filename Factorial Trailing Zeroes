@@ -1,0 +1,16 @@
+public class Solution {
+// basically it is to count the number of 5. The a little tricky part is that some number contains multiple 5, like 25, 125
+// therefore the number of 5 is actually n/5 + n/25 + n/125 + ...
+// for example: 51 -> 5 10 15 20 25 30 35 40 45 50; 25, 50, so there are 10 + 2 
+// the muptiply of 5 will make contribution to the result by 1, and multuplies of 25 make contributions by 2(1+1)..
+// thus we can count the number of 5 of n in the following way:
+
+    public int trailingZeroes(int n) {
+        int counter = 0;
+        while(n != 0){
+            counter += n/5;
+            n /= 5;
+        }
+        return counter;
+    }
+}
