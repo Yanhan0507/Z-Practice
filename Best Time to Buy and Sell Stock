@@ -1,0 +1,49 @@
+/*
+	 Say you have an array for which the ith element 
+	 is the price of a given stock on day i.
+	
+	If you were only permitted to complete at most one transaction 
+	(ie, buy one and sell one share of the stock), design an algorithm 
+	to find the maximum profit.
+ */
+
+public class Solution {
+
+// O(n) solution
+    public int maxProfit1(int[] prices) {
+    	int max = 0;
+    	int prev = 0;
+        for(int i = 0; i < prices.length; i++){
+        	if(prices[i] < prices[prev]){
+        		prev = i;
+        	}
+        	else{
+        		max = Math.max(prices[i] - prices[prev], max);
+        	}
+        }
+        return max;
+    }
+    
+// O(nlogn) solution
+    public int maxProfit(int[] prices){
+    	return maxProfit(prices, 0, prices.length - 1);
+    }
+    
+    private int maxProfit(int[] prices, int start, int end){
+    	if(start >= end){
+    		return 0;
+    	}
+    	int mid = (start + end)/2;
+    	int l = maxProfit(prices, start, mid - 1);
+    	int r = maxProfit(prices, mid + 1, end);
+    	int lmin = Integer.MAX_VALUE;
+    	int rmax = Integer.MIN_VALUE;
+    	for(int i = start; i <= mid; i++){
+    		lmin = Math.min(lmin, prices[i]);
+    	}
+    	for(int i = mid; i <= end; i++){
+    		rmax = Math.max(rmax, prices[i]);
+    	}
+    	return Math.max(Math.max(l, r), rmax-lmin);
+    }    
+}
