@@ -1,0 +1,120 @@
+/*
+    Given a collection of numbers that might contain duplicates, return all possible unique permutations.
+    
+    For example,
+    [1,1,2] have the following unique permutations:
+    [1,1,2], [1,2,1], and [2,1,1].
+*/
+// used a set at every time
+public class Solution {
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<Integer> path = new ArrayList<Integer>();
+        for(int i = 0; i < nums.length; i++){
+            path.add(nums[i]);
+        }
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        permuteUnique(result, path, 0);
+        return result;
+    }
+    
+    private void permuteUnique(List result, List<Integer> path, int level){
+        if(level == path.size()){
+            result.add(new ArrayList<Integer>(path));
+            return;
+        }
+        Set<Integer> used = new HashSet<Integer>();
+        for(int i = level; i < path.size(); i ++){
+            if(used.add(path.get(i))){
+                swap(path, i, level);
+                permuteUnique(result, path, level+1);
+                swap(path, i, level);
+            }
+        }
+    }
+    
+    private void swap(List<Integer> path, int i, int j){
+        int tmp = path.get(i);
+        path.set(i, path.get(j));
+        path.set(j, tmp);
+    }
+}
+
+
+// Solution 2, the set can be actually replaced by the alreadySwapped methods
+
+public class Solution {
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        Arrays.sort(nums);
+        List<Integer> path = new ArrayList<Integer>();
+        for(int i: nums){
+            path.add(i);
+        }
+        permuteUnique(nums, 0, result, path);
+        return result;
+    }
+    
+    private void permuteUnique(int[] nums, int level, List<List<Integer>> result, List<Integer> path){
+        if( level == nums.length){
+            result.add(new ArrayList<Integer>(path));
+            return;
+        }
+        for(int i = level; i < nums.length; i++){
+            if(alreadySwapped(level, i, path)){
+                continue;
+            }
+            swap(level, i, path);
+            permuteUnique(nums, level + 1, result, path);
+            swap(level, i, path);
+        }
+    }
+    
+    private boolean alreadySwapped(int start, int end, List<Integer> path){
+        int target = path.get(end);
+        for(int i = start; i < end; i ++){
+            if(path.get(i) == target){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private void swap(int i, int j, List<Integer> path){
+        int tmp = path.get(i);
+        path.set(i, path.get(j));
+        path.set(j, tmp);
+    }
+}
+
+/*   in each level, we just pick one number, the first one. So if the last number 
+(nums[i-1]) has not been used, and nums[i] == nums[i-1], then, we need to 
+pass this i, since i-1 in the last iterations has not been added, and it should be added before i. Therefore, for duplicates, only the first one will be added to path in each level (the first one, i ==0, or nums[i] != nums[i-1])
+*/
+public class Solution {
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        permuteUnique(nums, new boolean[nums.length], result, new ArrayList<Integer>(), 0);
+        return result;
+    }
+    
+    private void permuteUnique(int[] nums, boolean[] marked, List result, List<Integer> path, int level){
+        if(level == nums.length){
+            result.add(new ArrayList<Integer>(path));
+            return;
+        }
+        for(int i = 0; i < nums.length; i++){
+            if(marked[i]){
+                continue;
+            }
+            if(i!=0 && !marked[i-1] && nums[i-1] == nums[i]){
+                continue;
+            }
+            path.add(nums[i]);
+            marked[i] = true;
+            permuteUnique(nums, marked, result, path, level+1);
+            path.remove(path.size() - 1);
+            marked[i] =false;
+        }
+    }
+}
