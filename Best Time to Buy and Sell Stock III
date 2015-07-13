@@ -1,0 +1,65 @@
+// O(n^2) solution, which is easy to implement
+public class Solution {
+    public int maxProfit(int[] prices) {
+    	int max = 0;
+        for(int i = 0; i < prices.length; i ++){
+        	max = Math.max(max, maxProfit(prices, 0, i) + maxProfit(prices, i+1, prices.length-1));
+        }
+        return max;
+    }
+    
+    private int maxProfit(int[] prices, int start, int end){
+    	if(start >= end){
+    		return 0;
+    	}
+    	int max = 0;
+    	int prev = prices[start];
+    	
+    	for(int i = start + 1; i <= end; i++){
+    		if(prices[i] > prev){
+    			max = Math.max(max,  prices[i] - prev);
+    		}
+    		else{
+    			prev = Math.min(prev, prices[i]);
+    		}
+    	}
+    	return max;
+    }
+}
+
+
+// O(N) + O(N) + O(N) solution, remove the redundant computation of each split i
+public class Solution {
+	// left[i] stands for the max profit we can get from day 0 to day i
+	// right[i] stands for the max profit we can get from day i to n-1
+    public int maxProfit(int[] prices) {
+    	if(prices.length == 0){
+    		return 0;
+    	}
+    	int[] left = new int[prices.length];
+    	int[] right = new int[prices.length];
+    	preprocess(left, right, prices);
+    	int max = 0;
+    	for(int i = 0; i < prices.length; i++){
+    		max = Math.max(max, left[i] + right[i]);
+    	}
+    	return max;
+    }
+    
+    private void preprocess(int[] left, int[] right, int[] prices){
+    	int prev = prices[0];
+    	left[0] = 0;
+    	for(int i = 1; i < prices.length; i ++){
+    		left[i] = Math.max(prices[i] - prev, left[i-1]);
+    		prev = Math.min(prev, prices[i]);
+    	}
+    	
+    	int post = prices[prices.length - 1];
+    	right[prices.length - 1] = 0;
+    	for(int i = prices.length - 2; i >= 0; i --){
+    		right[i] = Math.max(right[i+1], post - prices[i]);
+    		post = Math.max(post, prices[i]);
+    	}
+    	
+    }
+}
