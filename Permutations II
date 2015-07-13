@@ -86,6 +86,7 @@ public class Solution {
     }
 }
 
+// Solution 3
 /*   in each level, we just pick one number, the first one. So if the last number 
 (nums[i-1]) has not been used, and nums[i] == nums[i-1], then, we need to 
 pass this i, since i-1 in the last iterations has not been added, and it should be added before i. Therefore, for duplicates, only the first one will be added to path in each level (the first one, i ==0, or nums[i] != nums[i-1])
