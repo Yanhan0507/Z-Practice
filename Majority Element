@@ -1,0 +1,60 @@
+/*
+	Given an array of size n, find the majority element. 
+	The majority element is the element that appears more than  n/2  times.
+	
+	You may assume that the array is non-empty and the majority
+	 element always exist in the array.
+*/
+
+public class Solution {
+
+	// O(n) solution
+	public int majorityElement(int[] nums) {
+        int counter = 1;
+        int cur = nums[0];
+        for(int i=1; i < nums.length; i++){
+        	if(nums[i] == cur){
+        		counter++;
+        	}
+        	else{
+        		if(counter == 0){
+        			counter = 1;
+        			cur = nums[i];
+        		}
+        		else{
+        			counter--;
+        		}
+        	}
+        }
+        return cur;
+    }
+	// divide and conquer: O(nlogn)
+    public int majorityElement1(int[] nums) {
+        return majorityElement1(nums, 0, nums.length - 1);
+    }
+    
+    private int majorityElement1(int[] nums, int start, int end){
+    	if(start == end){
+    		return nums[start];
+    	}
+    	int mid = (start + end)/2;
+    	int l = majorityElement1(nums, start, mid);
+    	int r = majorityElement1(nums, mid+1, end);
+    	int lcounter = 0;
+    	int rcounter = 0;
+    	for(int i = start; i<=end; i++){
+    		if(nums[i] == l){
+    			lcounter++;
+    		}
+    		if(nums[i] == r){
+    			rcounter++;
+    		}
+    	}
+    	if(lcounter > rcounter){
+    		return l;
+    	}
+    	else{
+    		return r;
+    	}
+    }    
+}
