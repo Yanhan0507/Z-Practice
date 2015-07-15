@@ -3,6 +3,10 @@
   Supposed the linked list is 1 -> 2 -> 3 -> 4 and you are given the third node with value 3, the linked list 
   should become 1 -> 2 -> 4 after calling your function.
 */
+
+// cuz we can only move forward, so the only way we can do is to assign the value for each node to its previous
+// node, and delete the last one.
+
 /**
  * Definition for singly-linked list.
  * public class ListNode {
