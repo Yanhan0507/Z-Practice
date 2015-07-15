@@ -18,3 +18,11 @@ public class Solution {
         return true;
     }
 }
+
+
+public class Solution {
+// for the power of two, they only have one bit whose value is 1, all other values should be 0
+    public boolean isPowerOfTwo(int n) {
+        return ((n & (n-1)) == 0)&& n > 0;
+    }
+}
