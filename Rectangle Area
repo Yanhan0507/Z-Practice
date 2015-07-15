@@ -1,0 +1,28 @@
+/*
+  Find the total area covered by two rectilinear rectangles in a 2D plane.
+  
+  Each rectangle is defined by its bottom left corner and top right corner as shown in the figure.
+  
+  Rectangle Area
+  Assume that the total area is never beyond the maximum possible value of int.Find the total area covered by two rectilinear rectangles in a 2D plane.
+  
+  Each rectangle is defined by its bottom left corner and top right corner as shown in the figure.
+  
+  Rectangle Area
+  Assume that the total area is never beyond the maximum possible value of int.
+*/
+public class Solution {
+
+    public int computeArea(int A, int B, int C, int D, int E, int F, int G, int H) {
+        long s = (C - A) * (D - B) + (G - E)*(H - F);
+        long area = 0;
+        long length = (long)Math.min(C, G) - (long)Math.max(A, E);
+        long height = (long)Math.min(D, H) - (long)Math.max(B, F);  // remember to change Math.max to long,
+        area = length * height;
+        if(length < 0 || height < 0){
+        	area = 0;
+        }
+        return (int)(s - area);
+    }
+
+}
