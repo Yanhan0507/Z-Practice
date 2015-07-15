@@ -34,3 +34,25 @@ public class Solution {
         return Math.max(r, l) + 1;
     }
 }
+
+
+ // this solution is more time-consuming, but without using a global variable
+public class Solution {
+    public boolean isBalanced(TreeNode root) {
+        if(root == null){
+            return true;
+        }
+        if( Math.abs(getHeight(root.right) - getHeight(root.left)) > 1){
+            return false;
+        }
+        return isBalanced(root.left) && isBalanced(root.right);
+    }
+    
+    // get height defind by maximla and minimal height is different
+    private int getHeight(TreeNode root){
+        if(root == null){
+            return 0;
+        }
+        return Math.max(getHeight(root.left), getHeight(root.right)) + 1;
+    }
+}
