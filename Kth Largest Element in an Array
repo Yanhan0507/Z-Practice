@@ -25,3 +25,4 @@ public class Solution {
         return pq.peek();
     }
 }
+// try quick select solution
