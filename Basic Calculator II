@@ -1,0 +1,104 @@
+/*
+    Implement a basic calculator to evaluate a simple expression string.
+    The expression string contains only non-negative integers, +, -, *, / operators and empty spaces . The integer division should truncate toward zero.
+    You may assume that the given expression is always valid.
+    Some examples:
+    "3+2*2" = 7
+    " 3/2 " = 1
+    " 3+5 / 2 " = 5
+
+    Note: Do not use the eval built-in library function. 
+*/
+
+public class Solution {
+    public int calculate(String s) {
+        List<String> exp = new ArrayList<String>();
+        getExp(s, exp);
+        System.out.println(exp);
+        List<String> postfix = new ArrayList<String>();
+        getPostFix(postfix, exp);
+        System.out.println(postfix);
+        return calculate(postfix);
+        
+    }
+    
+    private int calculate(List<String> postfix){  // remember num2 is the left number
+    	Stack<Integer> stack = new Stack<Integer>();
+    	int num1 = 0, num2 = 0;
+    	for(String str: postfix){
+    		if(str.equals("*")){
+    			num2 = stack.pop();
+    			num1 = stack.pop();
+    			stack.push(num1*num2);
+    		}
+    		else if(str.equals("/")){
+    			num2 = stack.pop();
+    			num1 = stack.pop();
+    			stack.push(num1 / num2);
+    		}
+    		else if(str.equals("-")){
+    			num2 = stack.pop();
+    			num1 = stack.pop();
+    			stack.push(num1 - num2);
+    		}
+    		else if(str.equals("+")){
+    			num2 = stack.pop();
+    			num1 = stack.pop();
+    			stack.push(num1 + num2);
+    		}
+    		else{
+    			stack.push(Integer.valueOf(str));
+    		}
+    	}
+    	return stack.pop();
+    }
+    
+    private void getPostFix(List<String> postfix, List<String> exp){
+    	Stack<String> operand = new Stack<String>();
+    	for(String str: exp){
+    		if(str.equals("-") || str.equals("+")){
+    			while(!operand.isEmpty()){
+    				postfix.add(operand.pop());
+    			}
+    			operand.push(str);
+    		}
+    		else if(str.equals("*") || str.equals("/")){
+    			while(!operand.isEmpty() && (operand.peek().equals("*") || operand.peek().equals("/"))){
+    					postfix.add(operand.pop());
+    			}
+    			operand.push(str);
+    		}
+    		else{
+    			postfix.add(str);
+    		}
+    	}
+    	while(!operand.isEmpty()){
+    		postfix.add(operand.pop());
+    	}
+    }
+    
+    private void getExp(String s, List<String> exp){
+        for(int i = 0; i < s.length(); i++){
+        	char ch = s.charAt(i);
+        	if(ch == ' '){
+        		continue;
+        	}
+        	else if(isDigit(ch)){
+        		StringBuilder sb = new StringBuilder();
+            	while(i < s.length() && isDigit(s.charAt(i))){
+            		sb.append(s.charAt(i));
+            		i++;
+            	}
+            	i--;
+            	exp.add(sb.toString());
+        	}
+        	else{
+        		exp.add("" + ch);
+        	}
+        }
+    }
+    
+    private boolean isDigit(char ch){
+    	return ch <= '9' && ch >= '0';
+    }
+}
