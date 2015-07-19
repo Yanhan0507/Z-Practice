@@ -1,0 +1,33 @@
+/*
+	Given a range [m, n] where 0 <= m <= n <= 2147483647, 
+	return the bitwise AND of all numbers in this range, inclusive.
+	
+	For example, given the range [5, 7], you should return 4.
+*/
+
+
+//	 the 1 in left part will be the result
+//	 26:30 11010　　11011　　11100　　11101　　11110 -> 11000
+//	 5:7   101　　110　　111  -> 100
+
+public class Solution {
+	
+    public int rangeBitwiseAnd(int m, int n) {
+    	int mask = Integer.MAX_VALUE;
+    	while((mask & m) != (mask & n)){
+    		mask  <<= 1;
+    	}
+    	return mask & m;
+    }
+	
+    
+    public int rangeBitwiseAnd1(int m, int n) {
+    	int shift = 0;
+    	while(m != n){
+    		shift++;
+    		m >>= 1;
+    		n >>= 1;
+    	}
+    	return m << shift;
+    }
+}
