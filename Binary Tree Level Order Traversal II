@@ -1,0 +1,59 @@
+/*
+Given a binary tree, find its maximum depth.
+The maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+
+*/    
+
+// DFS
+
+public class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        LinkedList<List<Integer>> result = new LinkedList<List<Integer>>();
+        DFS(result, root, 0);
+        return result;
+    }
+    
+    private void DFS(LinkedList<List<Integer>> result, TreeNode root, int level){
+    	if(root == null){
+    		return;
+    	}
+    	if(level >= result.size()){
+    		List<Integer> list = new ArrayList<Integer>();
+    		result.addFirst(list);
+    	}
+    	result.get(result.size() - 1 - level).add(root.val);
+    	DFS(result, root.left, level + 1);
+    	DFS(result, root.right, level + 1);
+    }
+}
+
+
+//  BFS
+
+public class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        List<List<Integer>> result = new LinkedList<List<Integer>>();
+        if(root == null){
+            return result;
+        }
+        LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
+        queue.add(root);
+        while( !queue.isEmpty() ){
+        	List<Integer> list = new ArrayList<Integer>();
+        	LinkedList<TreeNode> tmpQueue = new LinkedList<TreeNode>();
+        	while(!queue.isEmpty()){
+        		TreeNode node = queue.poll();
+        		list.add(node.val);
+        		if(node.left != null){
+        			tmpQueue.add(node.left);
+        		}
+        		if(node.right != null){
+        			tmpQueue.add(node.right);
+        		}
+        	}
+        	queue = tmpQueue;
+        	result.add(0, new ArrayList<Integer>(list));
+        }
+        return result;
+    }
+}
