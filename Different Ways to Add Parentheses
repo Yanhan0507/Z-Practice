@@ -1,0 +1,60 @@
+/*
+    Given a string of numbers and operators, return all possible results from computing all the different possible ways to group numbers and operators. The valid operators are +, - and *.
+    
+    Example 1
+    
+    Input: "2-1-1".
+    
+    ((2-1)-1) = 0
+    (2-(1-1)) = 2
+    
+    Output: [0, 2]
+    
+    Example 2
+    
+    Input: "2*3-4*5"
+    
+    (2*(3-(4*5))) = -34
+    ((2*3)-(4*5)) = -14
+    ((2*(3-4))*5) = -10
+    (2*((3-4)*5)) = -10
+    (((2*3)-4)*5) = 10
+    
+    Output: [-34, -14, -10, -10, 10]
+*/
+
+// every operator stands for a chance to be added parentheses
+
+public class Solution {
+    public List<Integer> diffWaysToCompute(String input) {
+        List<Integer> ret = new ArrayList<Integer>();
+        for(int i = 0; i < input.length(); i++){
+            char op = input.charAt(i);
+            if(op == '+' || op == '-' || op == '*'){
+                String input1 = input.substring(0,i);
+                String input2 = input.substring(i+1, input.length());
+                List<Integer> part1 = diffWaysToCompute(input1);
+                List<Integer> part2 = diffWaysToCompute(input2);
+                for(int num1: part1){
+                    for(int num2: part2){
+                        int val = 0;
+                        if(op == '+'){
+                            val = num1 + num2;
+                        }
+                        else if(op == '-'){
+                            val = num1 - num2;
+                        }
+                        else if(op == '*'){
+                            val = num1 * num2;
+                        }
+                        ret.add(val);
+                    }
+                }
+            }
+        }
+        if(ret.size() == 0){
+            ret.add(Integer.valueOf(input));
+        }
+        return ret;
+    }
+}
