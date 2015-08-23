@@ -1,0 +1,108 @@
+'?' Matches any single character.
+'*' Matches any sequence of characters (including the empty sequence).
+
+The matching should cover the entire input string (not partial).
+
+The function prototype should be:
+bool isMatch(const char *s, const char *p)
+
+Some examples:
+isMatch("aa","a") → false
+isMatch("aa","aa") → true
+isMatch("aaa","aa") → false
+isMatch("aa", "*") → true
+isMatch("aa", "a*") → true
+isMatch("ab", "?*") → true
+isMatch("aab", "c*a*b") → false
+
+
+
+public class Solution {
+    public boolean isMatch(String s, String p) {
+
+        int[][] record = new int[s.length() + 1][p.length() + 1] ;
+        return isMatch(s, p, 0, 0, record);
+    }
+    
+    private boolean isMatch(String s, String p, int startS, int startP, int[][] record){
+        if(record[startS][startP] == -1){
+            return false;
+        }
+        if(record[startS][startP] == 1){
+            return true;
+        }
+        if(startS == s.length() ){
+            for(int i = startP; i < p.length(); i++){
+                if(p.charAt(i) != '*'){
+                    record[startS][startP] = -1;
+                    return false;
+                }
+            }
+            record[startS][startP] = 1;
+            return true;
+        }
+        if(startP >= p.length()){
+            record[startS][startP] = -1;
+            return false;
+        }
+        if(startS >= s.length()){
+            record[startS][startP] = -1;
+            return false;
+        }
+        if(s.charAt(startS) == p.charAt(startP) || p.charAt(startP) == '?'){
+            boolean flag = isMatch(s, p, startS + 1, startP + 1, record);
+            if(flag == true){
+                record[startS][startP] = 1;
+            }
+            else{
+                record[startS][startP] = -1;
+            }
+            return flag;
+        }
+        else if(p.charAt(startP) == '*'){
+            boolean flag = true;
+            for(int j = startS; j <= s.length(); j ++){
+                flag = isMatch(s, p, j, startP + 1, record);
+                if(flag){
+                    return true;
+                }
+            }
+        }
+        record[startS][startP] = -1;
+        return false;
+    }
+    
+}
+
+public class Solution {
+    public boolean isMatch(String s, String p) {
+        int backI = -1;
+        int backJ = -1;
+        int i = 0;
+        int j = 0;
+        while(i < s.length()){
+            if(j < p.length() && ( s.charAt(i) == p.charAt(j) || p.charAt(j) == '?')){
+                i++;
+                j++;
+            }
+            else if(j < p.length() && p.charAt(j) == '*'){
+                backJ = j;
+                j++;
+                backI = i;
+            }
+            else{
+                if(backJ == -1){
+                    return false;
+                }
+                i = ++backI;
+                j = backJ + 1;
+            }
+        }
+        for(;j < p.length(); j++){
+            if(p.charAt(j) != '*'){
+                return false;
+            }
+        }
+        return true;
+    }
+}
