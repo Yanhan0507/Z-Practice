@@ -28,3 +28,30 @@ public class Solution {
         return step;
     }
 }
+
+
+//
+DP solution
+
+
+
+public class Solution {
+    public int jump(int[] nums) {
+        int[] record = new int[nums.length];
+        for(int i = 0; i < record.length; i ++){
+            record[i] = -1;
+        }
+        record[0] = 0;
+        for(int i = 0; i < nums.length; i ++){
+            for(int j = i + 1; j <= i + nums[i] && j < nums.length; j++){
+                if(record[j] == -1){
+                    record[j] = record[i] + 1;
+                }
+                else{
+                    record[j] = Math.min(record[j], record[i] + 1);
+                }
+            }
+        }
+        return record[record.length - 1];
+    }
+}
