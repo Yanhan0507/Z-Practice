@@ -1,0 +1,49 @@
+// brute solution, but it cost O(N^2) 
+public class Solution {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int sum = 0;
+        int curSum = 0;
+        int begin = 0;
+        for(int i = 0; i < gas.length; i++){
+            int cur = gas[i] - cost[i];
+            sum += cur;
+            curSum += cur;
+            if(cur > curSum){
+                begin = i;
+                curSum = cur;
+            }
+        }
+        if(sum >= 0){
+            return begin;
+        }
+        return -1;
+    }
+}
+
+// public class Solution {
+//     public int canCompleteCircuit(int[] gas, int[] cost) {
+//         if(gas.length > 100){
+//             return -1;
+//         }
+//         boolean founded = false;
+//         for(int i = 0; i < gas.length; i++){
+//             int index = i;
+//             founded = true;
+//             int sum = gas[index] - cost[index];
+//             if(sum < 0){
+//                 continue;
+//             }
+//             for(int j = (index+1)%gas.length; j != index; j = (j+1)%gas.length){
+//                 sum = sum + gas[j] - cost[j];
+//                 if(sum < 0){
+//                     founded = false;
+//                     break;
+//                 }
+//             }
+//             if(founded){
+//                 return index;
+//             }
+//         }
+//         return -1;
+//     }
+// }
