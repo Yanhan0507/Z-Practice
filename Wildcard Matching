@@ -15,7 +15,8 @@ isMatch("aa", "a*") → true
 isMatch("ab", "?*") → true
 isMatch("aab", "c*a*b") → false
 
-// Great thanks to Libo, a past Candece intern, who has lot of experience in memory reduce and help me reduce the memory space.
+// Great thanks to Libo, a past Candece intern, who has lots of experience in memory reduce and help me reduce the memory 
+space in this solution by using a char array, rather than an integer arrary.
 
 public class Solution {
     public boolean isMatch(String s, String p) {
