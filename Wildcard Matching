@@ -37,25 +37,11 @@ public class Solution {
         if(record[startS][startP] == '1'){
             return true;
         }
-        if(startS == s.length() ){
-            for(int i = startP; i < p.length(); i++){
-                if(p.charAt(i) != '*'){
-                    record[startS][startP] = '0';
-                    return false;
-                }
-            }
+        if(startS == s.length() && startP == p.length()){
             record[startS][startP] = '1';
             return true;
         }
-        if(startP >= p.length()){
-            record[startS][startP] = '0';
-            return false;
-        }
-        if(startS >= s.length()){
-            record[startS][startP] = '0';
-            return false;
-        }
-        if(s.charAt(startS) == p.charAt(startP) || p.charAt(startP) == '?'){
+        if((startS < s.length() && startP < p.length()) && (s.charAt(startS) == p.charAt(startP) || p.charAt(startP) == '?')){
             boolean flag = isMatch(s, p, startS + 1, startP + 1, record);
             if(flag == true){
                 record[startS][startP] = '1';
@@ -65,7 +51,7 @@ public class Solution {
             }
             return flag;
         }
-        else if(p.charAt(startP) == '*'){
+        else if(startP < p.length() && p.charAt(startP) == '*'){
             boolean flag = true;
             for(int j = startS; j <= s.length(); j ++){
                 flag = isMatch(s, p, j, startP + 1, record);
