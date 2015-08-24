@@ -1,0 +1,139 @@
+
+PreOder:  using stack, notice that we need to push right before left
+
+public class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        if(root == null){
+            return new ArrayList<Integer>(); 
+        }
+        Stack<TreeNode> stack = new Stack<TreeNode>();  
+        List<Integer> result = new ArrayList<Integer>();
+        stack.push(root);
+        while( !stack.isEmpty() ){
+            TreeNode cur = stack.pop();
+            result.add(cur.val);
+            if(cur.right != null){
+                stack.push(cur.right);
+            }
+            if(cur.left != null){
+                stack.push(cur.left);
+            }
+        }
+        return result;
+    }
+}
+
+public class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<Integer>();
+        preorderTraversal(root, result);
+        return result;
+    }
+    
+    private void preorderTraversal(TreeNode root, List<Integer> result){
+        if(root == null){
+            return;
+        }
+        result.add(root.val);
+        preorderTraversal(root.left, result);
+        preorderTraversal(root.right, result);
+    }
+}
+
+//  in-order traversal, remember to use an additional node
+
+public class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        List<Integer> result = new ArrayList<Integer>();
+        TreeNode cur = root;
+        while(cur != null || !stack.empty()){
+            if(cur == null){
+                cur = stack.pop();
+                result.add(cur.val);
+                cur = cur.right;
+            }
+            else{
+                while(cur != null){
+                    stack.push(cur);
+                    cur = cur.left;
+                }
+            }
+        }
+        return result;
+    }
+}
+
+
+public class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<Integer>();
+        inorderTraversal(root, result);
+        return result;
+    }
+    
+    private void inorderTraversal(TreeNode root, List<Integer> result){
+        if(root == null){
+            return;
+        }
+        if(root.left != null){
+            inorderTraversal(root.left, result);
+        }
+        result.add(root.val);
+        if(root.right != null){
+            inorderTraversal(root.right, result);
+        }
+    }
+}
+
+// post-order traversal, corner case, remember to use an additional node: prev, push right before left
+public class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        TreeNode prev = null;
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        List<Integer> result = new ArrayList<Integer>();
+        if(root == null){
+            return result;
+        }
+        stack.push(root);
+        while(!stack.empty()){
+            TreeNode cur = stack.pop();
+            if((prev != null && (cur.left == prev || cur.right == prev)) || (cur.left == null && cur.right == null) ){
+                result.add(cur.val);
+                prev = cur;
+                continue;
+            }
+            stack.push(cur);
+            if(cur.right != null){
+                stack.push(cur.right);
+            }
+            if(cur.left != null){
+                stack.push(cur.left);
+            }
+        }
+        return result;
+    }
+}
+
+
+public class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<Integer>();
+        postorderTraversal(root, result);
+        return result;
+    }
+    
+    private void postorderTraversal(TreeNode root, List<Integer> result){
+        if(root == null){
+            return;
+        }
+        if(root.left != null){
+            postorderTraversal(root.left, result);
+        }
+        if(root.right != null){
+            postorderTraversal(root.right, result);
+        }
+        result.add(root.val);
+    }
+}
+
