@@ -49,7 +49,44 @@ public class Solution {
                 }
             }
         }
-        
-        
+    }
+}
+
+//  recursive way
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    List<Integer> result = new ArrayList<Integer>();
+    int i = 0;
+    public void recoverTree(TreeNode root) {
+        buildList(root);
+        Collections.sort(result);
+        buildTree(root);
+    }
+    private void buildList(TreeNode root){
+        if(root == null){
+            return;
+        }
+        buildList(root.left);
+        result.add(root.val);
+        buildList(root.right);
+    }
+    
+    private void buildTree(TreeNode root){
+        if(root == null){
+            return;
+        }
+        buildTree(root.left);
+        root.val = result.get(i);
+        i++;
+        buildTree(root.right);
     }
 }
