@@ -1,0 +1,62 @@
+/*
+  Follow up for problem "Populating Next Right Pointers in Each Node".
+  
+  What if the given tree could be any binary tree? Would your previous solution still work?
+  
+  Note:
+  
+  You may only use constant extra space.
+  For example,
+  Given the following binary tree,
+           1
+         /  \
+        2    3
+       / \    \
+      4   5    7
+  After calling your function, the tree should look like:
+           1 -> NULL
+         /  \
+        2 -> 3 -> NULL
+       / \    \
+      4-> 5 -> 7 -> NULL
+*/
+
+/**
+ * Definition for binary tree with next pointer.
+ * public class TreeLinkNode {
+ *     int val;
+ *     TreeLinkNode left, right, next;
+ *     TreeLinkNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public void connect(TreeLinkNode root) {
+        Queue<TreeLinkNode> queue = new LinkedList<TreeLinkNode>();
+        if(root == null){  // corner case
+            return;
+        }
+        queue.add(root);
+        while(!queue.isEmpty()){
+            Iterator<TreeLinkNode> it = queue.iterator();
+            Queue<TreeLinkNode> tmpQueue = new LinkedList<TreeLinkNode>();
+            TreeLinkNode prev = it.next();
+            while(it.hasNext()){
+                TreeLinkNode cur = it.next();
+                prev.next = cur;
+                prev = cur;
+            }
+            prev.next = null;
+            it = queue.iterator();
+            while(it.hasNext()){
+                TreeLinkNode cur = it.next();
+                if(cur.left != null){
+                    tmpQueue.add(cur.left);
+                }
+                if(cur.right != null){
+                    tmpQueue.add(cur.right);
+                }
+            }
+            queue = tmpQueue;
+        }
+    }
+}
