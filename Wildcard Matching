@@ -15,47 +15,52 @@ isMatch("aa", "a*") → true
 isMatch("ab", "?*") → true
 isMatch("aab", "c*a*b") → false
 
-
+// Great thanks to Libo, who help me reduce the memory space.
 
 public class Solution {
     public boolean isMatch(String s, String p) {
 
-        int[][] record = new int[s.length() + 1][p.length() + 1] ;
+        char[][] record = new char[s.length() + 1][p.length() + 1] ;
+        for(int i=0; i < record.length; i++){
+            for(int j = 0; j < record[i].length; j++){
+                record[i][j] = '2';
+            }
+        }
         return isMatch(s, p, 0, 0, record);
     }
     
-    private boolean isMatch(String s, String p, int startS, int startP, int[][] record){
-        if(record[startS][startP] == -1){
+    private boolean isMatch(String s, String p, int startS, int startP, char[][] record){
+        if(record[startS][startP] == '0'){
             return false;
         }
-        if(record[startS][startP] == 1){
+        if(record[startS][startP] == '1'){
             return true;
         }
         if(startS == s.length() ){
             for(int i = startP; i < p.length(); i++){
                 if(p.charAt(i) != '*'){
-                    record[startS][startP] = -1;
+                    record[startS][startP] = '0';
                     return false;
                 }
             }
-            record[startS][startP] = 1;
+            record[startS][startP] = '1';
             return true;
         }
         if(startP >= p.length()){
-            record[startS][startP] = -1;
+            record[startS][startP] = '0';
             return false;
         }
         if(startS >= s.length()){
-            record[startS][startP] = -1;
+            record[startS][startP] = '0';
             return false;
         }
         if(s.charAt(startS) == p.charAt(startP) || p.charAt(startP) == '?'){
             boolean flag = isMatch(s, p, startS + 1, startP + 1, record);
             if(flag == true){
-                record[startS][startP] = 1;
+                record[startS][startP] = '1';
             }
             else{
-                record[startS][startP] = -1;
+                record[startS][startP] = '0';
             }
             return flag;
         }
@@ -68,7 +73,7 @@ public class Solution {
                 }
             }
         }
-        record[startS][startP] = -1;
+        record[startS][startP] = '0';
         return false;
     }
     
