@@ -1,0 +1,95 @@
+/*
+
+Given a binary tree, return all root-to-leaf paths.
+
+For example, given the following binary tree:
+
+   1
+ /   \
+2     3
+ \
+  5
+All root-to-leaf paths are:
+
+["1->2->5", "1->3"]
+*/
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+ 
+ // backtracing
+public class Solution {
+    public List<String> binaryTreePaths(TreeNode root) {
+        List<String> result = new ArrayList<String>();
+        if(root != null){
+            binaryTreePaths(root, result, new StringBuilder());
+        }
+        return result;
+    }
+    
+    private void binaryTreePaths(TreeNode root, List<String> result, StringBuilder sb){
+        if(root.left == null && root.right == null){ // the leaf means both left and right are null
+            result.add(sb.toString() + root.val);
+            return;
+        }
+        String item =  root.val + "->";
+        int length = item.length();
+        sb.append(item);
+        if(root.left != null){
+            binaryTreePaths(root.left, result, sb);
+        }
+        if(root.right != null){
+            binaryTreePaths(root.right, result, sb);
+        }
+        int i = 0;
+        while(i < length){
+            i++;
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        
+    }
+}
+
+
+// normal solution
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public List<String> binaryTreePaths(TreeNode root) {
+        List<String> result = new ArrayList<String>();
+        if(root != null){
+            binaryTreePaths(root, result, "");
+        }
+        return result;
+    }
+    private void binaryTreePaths(TreeNode root, List<String> result, String path){
+        if(root.left == null && root.right == null){
+            result.add(path + root.val);
+            return;
+        }
+        path = path + root.val + "->";
+        if(root.left != null){
+            binaryTreePaths(root.left, result, path);
+        }
+        if(root.right != null){
+            binaryTreePaths(root.right, result, path);
+        }
+        
+    }
+}
