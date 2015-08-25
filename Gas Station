@@ -3,22 +3,24 @@
 
 public class Solution {
     public int canCompleteCircuit(int[] gas, int[] cost) {
-        int sum = 0;
         int curSum = 0;
-        int begin = 0;
+        int sum = 0;
+        int record = 0;
         for(int i = 0; i < gas.length; i++){
-            int cur = gas[i] - cost[i];
-            sum += cur;
-            curSum += cur;
-            if(cur > curSum){
-                begin = i;
-                curSum = cur;
+            int diff = gas[i] - cost[i];
+            sum += diff;
+            curSum += diff;
+            if(curSum < 0){
+                curSum = 0;
+                record = i + 1;
             }
         }
-        if(sum >= 0){
-            return begin;
+        if(sum < 0){
+            return -1;
         }
-        return -1;
+        else{
+            return record;
+        }
     }
 }
 
