@@ -24,6 +24,40 @@ public class Solution {
     }
 }
 
+public class Solution {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int curMax = gas[0] - cost[0]; 
+        int max = gas[0] - cost[0];
+        int record = 0;
+        int curRecord = 0;
+        int sum = gas[0] - cost[0];
+        for(int i = 1; i < 2 * gas.length; i++){
+            int index = i % gas.length;
+            int dif = gas[index] - cost[index];
+            sum += dif;
+            if(dif > curMax + dif){
+                curRecord = index;
+                curMax = dif;
+            }
+            else{
+                curMax += dif;
+            }
+            
+            if(curMax > max){
+                record = curRecord;
+                max = curMax;
+            }
+        }
+        if(sum >= 0){
+            return record;
+        }
+        else{
+            return -1;
+        }
+    }
+}
+
+
 // brute solution, but it cost O(N^2) 
 // public class Solution {
 //     public int canCompleteCircuit(int[] gas, int[] cost) {
@@ -54,37 +88,4 @@ public class Solution {
 // }
 
 
-//  wrong solution!
 
-public class Solution {
-    public int canCompleteCircuit(int[] gas, int[] cost) {
-        int curMax = gas[0] - cost[0]; 
-        int max = gas[0] - cost[0];
-        int record = 0;
-        int curRecord = 0;
-        int sum = gas[0] - cost[0];
-        for(int i = 1; i < gas.length; i++){
-            int dif = gas[i] - cost[i];
-            sum += dif;
-            if(dif > curMax + dif){
-                curRecord = i;
-                curMax = dif;
-            }
-            else{
-                curMax += dif;
-            }
-            
-            if(curMax > max){
-                record = curRecord;
-                max = curMax;
-            }
-        }
-        if(sum >= 0){
-            return record;
-        }
-        else{
-            return -1;
-        }
-        
-    }
-}
