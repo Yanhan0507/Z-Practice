@@ -1,5 +1,7 @@
 //  At the very beginning, I once thought this problem was equivalent to the problem of selling stock or maximal sum subarray, 
 //  which is to find the maximal continuous sum in the given sequence. However, it's circular, so it will not work well.
+//  if we really want to apply the maximal subarray solution to this question, we can traverse the array twice:
+//   1 2 -5 3 -> 1 2 -5 3 1 2 -5 3
 
 public class Solution {
     public int canCompleteCircuit(int[] gas, int[] cost) {
