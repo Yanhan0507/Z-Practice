@@ -1,0 +1,81 @@
+/*
+  You are given a string, s, and a list of words, words, that are all of the same length. 
+  Find all starting indices of substring(s) in s that is a concatenation of each word in 
+  words exactly once and without any intervening characters.
+  
+  For example, given:
+  s: "barfoothefoobarman"
+  words: ["foo", "bar"]
+  
+  You should return the indices: [0,9].
+  (order does not matter).
+*/
+
+
+public class Solution {
+    public List<Integer> findSubstring(String s, String[] words) {
+        HashMap<String, Integer> dict = new HashMap<String, Integer>();
+        List<Integer> result = new ArrayList<Integer>();
+        int wordLen = words[0].length();
+        for(int i = 0; i < words.length; i++){
+            if(dict.containsKey(words[i])){
+                dict.put(words[i], dict.get(words[i]) + 1);
+            }
+            else{
+                dict.put(words[i], 1);
+            }
+        }
+        
+        for(int i=0; i < wordLen; i++){
+            HashMap<String, Integer> curMap = new HashMap<String, Integer>();
+            int counter = 0;
+            int start = i;
+            for(int j = i; j <= s.length() - wordLen; j += wordLen){
+                counter++;
+                String item = s.substring(j, j + wordLen);
+                if(dict.containsKey(item)){
+                    if(!curMap.containsKey(item)){
+                        curMap.put(item, 1);
+                    }
+                    else{
+                        curMap.put(item, curMap.get(item) + 1);
+                        if(curMap.get(item) > dict.get(item)){
+                            for(int k = start; k <= j; k += wordLen){
+                                counter--;
+                                String tmp = s.substring(k, k + wordLen);
+                                if(curMap.get(tmp) == 1){
+                                    curMap.remove(tmp);
+                                }
+                                else{
+                                    curMap.put(tmp, curMap.get(tmp) - 1);
+                                }
+                                if(tmp.equals(item)){
+                                    start = k + wordLen;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                else{
+                   start = j + wordLen;
+                   counter = 0;
+                   curMap.clear();
+                }
+                if(counter == words.length){
+                    result.add(start);
+                    String tmp = s.substring(start, start+wordLen);
+                    start += wordLen;
+                    if(curMap.get(tmp) == 1){
+                        curMap.remove(tmp);
+                    }
+                    else{
+                        curMap.put(tmp, curMap.get(tmp) - 1);
+                    }
+                    counter--;
+                }
+            }
+        }
+        return result;
+    }
+}
