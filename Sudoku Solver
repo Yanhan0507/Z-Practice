@@ -1,0 +1,86 @@
+/*
+Write a program to solve a Sudoku puzzle by filling the empty cells.
+
+Empty cells are indicated by the character '.'.
+
+You may assume that there will be only one unique solution.
+*/
+public class Solution {
+    public void solveSudoku(char[][] board) {
+        helper(0, 0, board);
+    }
+    
+    private boolean helper(int i, int j, char[][] board){
+        if(i == board.length){
+            return true;
+        }
+
+        int nextI = i;
+        int nextJ = j + 1;
+        if(j == board[i].length - 1){
+            nextJ = 0;
+            nextI = i + 1;
+        }
+        if(board[i][j] != '.'){
+            return helper(nextI, nextJ, board);
+        }
+        boolean founded = false;
+        for(int k = 1; k <= 9; k++){
+            char ch = (char)('0' + k);   // dont forget (char)
+            board[i][j] = ch;
+            if(isValid(board)){
+                if(helper(nextI, nextJ, board)){
+                    founded = true ;
+                    break;
+                }
+            }
+        }
+        if(founded == false){
+            board[i][j] = '.';
+        }
+        return founded;
+    }
+    
+    private boolean isValid(char[][] board){
+        for(int i = 0; i < board.length; i++){
+            Set<Character> hs = new HashSet<Character>();
+            for(int j = 0; j < board[i].length; j++){
+                char ch = board[i][j];
+                if(ch <= '9' && ch >= '0'){
+                    if (!hs.add(ch)){
+                        return false;
+                    }
+                }
+            }
+        }
+        
+        for(int i = 0; i < board[0].length; i++){
+            Set<Character> hs = new HashSet<Character>();
+            for(int j = 0; j < board.length; j++){
+                char ch = board[j][i];
+                if(ch <= '9' && ch >= '0'){
+                    if (!hs.add(ch)){
+                        return false;
+                    }
+                }
+            }
+        }
+        
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                Set<Character> hs = new HashSet<Character>();
+                for(int m = 3*i; m < 3*i + 3; m++){
+                    for( int n = 3*j; n < 3*j + 3; n++){
+                        char ch = board[m][n];
+                        if(ch <= '9' && ch >= '0'){
+                            if (!hs.add(ch)){
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+}
