@@ -1,0 +1,48 @@
+public class Solution {
+    public int largestRectangleArea(int[] height) {
+        if(height == null || height.length == 0){
+            return 0;
+        }
+        Stack<Integer> stack = new Stack<Integer>();
+        int max = 0;
+        for(int i = 0; i <= height.length; i++){
+            int cur = 0;
+            if(i != height.length){
+                cur = height[i];
+            }
+            if(stack.empty() || cur >= height[stack.peek()]){
+                stack.push(i);
+            }
+            else{
+                int tmp = stack.pop();
+                int curArea = height[tmp]*(stack.empty()? i: i - 1 - stack.peek() );
+                max = Math.max(max, curArea);
+                i--;
+            }
+        }
+        return max;
+    }
+}
+
+
+// brute force solution:
+
+public class Solution {
+    public int largestRectangleArea(int[] height) {
+        if(height == null || height.length == 0){
+            return 0;
+        }
+        int max = 0;
+        for(int i = 0; i < height.length; i ++){
+            int curMin = height[i];
+            max = Math.max(max, height[i]);
+            for(int j = i+1; j < height.length; j++){
+                if(curMin > height[j]){
+                    curMin = height[j];
+                }
+                max = Math.max(max, curMin*(j-i+1));
+            }
+        }
+        return max;
+    }
+}
