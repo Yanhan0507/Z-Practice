@@ -1,0 +1,59 @@
+/*
+  Given n points on a 2D plane, find the maximum number of points that lie on the same straight line.
+*/
+
+/**
+ * Definition for a point.
+ * class Point {
+ *     int x;
+ *     int y;
+ *     Point() { x = 0; y = 0; }
+ *     Point(int a, int b) { x = a; y = b; }
+ * }
+ */
+public class Solution {
+    public int maxPoints(Point[] points) {
+        if(points == null || points.length == 0){
+            return 0;
+        }
+        int max = 1;
+        for(int i = 0; i < points.length; i++){
+            Map<Double, Integer> map = new HashMap<Double, Integer>();
+            int rep = 0;
+            double ratio = 0.0;
+            int curMax = 1;
+            for(int j = i + 1; j < points.length; j++){
+                if(points[i].x == points[j].x && points[i].y == points[j].y){
+                    rep++;
+                    continue;
+                }
+                else if(points[i].x == points[j].x){
+                    ratio = (double)Integer.MAX_VALUE;
+                }
+                else if(points[j].y == points[i].y)  
+                {   
+                    ratio = 0.0;  
+                }  
+                else{
+                    double diffX = (double)(points[i].x - points[j].x);
+                    double diffY = (double)(points[i].y - points[j].y);
+                    ratio = diffY/diffX;
+                }
+                if(!map.containsKey(ratio)){
+                    map.put(ratio, 2);
+                }
+                else{
+                    map.put(ratio, map.get(ratio) + 1);
+                }
+            }
+            Set<Double> set = map.keySet();
+            for(double item: set){
+                if( curMax < map.get(item)){
+                    curMax = map.get(item);
+                }
+            }
+            max = Math.max(curMax + rep, max);
+        }
+        return max;
+    }
+}
