@@ -1,3 +1,88 @@
+// HashMap Solution
+
+public class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        Map<Integer, List<List<Integer>>> map = new HashMap<Integer, List<List<Integer>>>();
+        for(int i = 0; i < nums.length; i++){
+            for(int j = i+1; j < nums.length; j++){
+                int val1 = nums[i];
+                int val2 = nums[j];
+                int key = val1 + val2;
+                List<Integer> list = new ArrayList<Integer>();
+                list.add(i);
+                list.add(j);
+                if(map.containsKey(key)){
+                    map.get(key).add(list);
+                }
+                else{
+                    List<List<Integer>> tmp = new ArrayList<List<Integer>>();
+                    tmp.add(list);
+                    map.put(key, tmp);
+                }
+            }
+        }
+        Set<List<Integer>> result = new HashSet<List<Integer>>();
+        Set<Integer> set = map.keySet();
+        for(int i: set){
+            int value = target - i;
+            if(value == i){
+                result.addAll(buildSolution(map.get(value), nums));
+            }
+            else if(map.containsKey(value)){
+                result.addAll(buildSolution(map.get(value), map.get(i), nums));
+            }
+        }
+        return new ArrayList<List<Integer>>(result);
+    }
+    
+    private Set<List<Integer>> buildSolution(List<List<Integer>> list1, List<List<Integer>> list2, int[] nums){
+        Set<List<Integer>> result = new HashSet<List<Integer>>();
+        for(List<Integer> tmp1: list1){
+            for(List<Integer> tmp2: list2){
+                if(isValid(tmp1, tmp2)){
+                    List<Integer> tmp = new ArrayList<Integer>();
+                    tmp.add(nums[tmp1.get(0)]);
+                    tmp.add(nums[tmp1.get(1)]);
+                    tmp.add(nums[tmp2.get(0)]);
+                    tmp.add(nums[tmp2.get(1)]);
+                    Collections.sort(tmp);
+                    result.add(tmp);
+                }
+            }
+        }
+        return result;
+    }
+    
+    private Set<List<Integer>> buildSolution(List<List<Integer>> list, int[] nums){
+        Set<List<Integer>> result = new HashSet<List<Integer>>();
+        for(int i = 0; i < list.size(); i++){
+            List<Integer> tmp1 = list.get(i);
+            for(int j = i+1; j < list.size(); j++){
+                List<Integer> tmp2 = list.get(j);
+                if(isValid(tmp1, tmp2)){
+                    List<Integer> tmp = new ArrayList<Integer>();
+                    tmp.add(nums[tmp1.get(0)]);
+                    tmp.add(nums[tmp1.get(1)]);
+                    tmp.add(nums[tmp2.get(0)]);
+                    tmp.add(nums[tmp2.get(1)]);
+                    Collections.sort(tmp);
+                    result.add(tmp);
+                }
+                
+            }
+        }
+        return result;
+    }
+    
+    private boolean isValid(List<Integer> l1, List<Integer> l2){
+        int x1 = l1.get(0), x2 = l1.get(1);
+        int y1 = l2.get(0), y2 = l2.get(1);
+        return x1 != y1 && x1 != y2 && x2 != y1 && x2 != y2;
+    }
+    
+}
+
+// O(n^3) solution
 public class Solution {
     public List<List<Integer>> fourSum(int[] nums, int target) {
         Arrays.sort(nums);
@@ -33,3 +118,5 @@ public class Solution {
         return new ArrayList<List<Integer>>(set);
     }
 }
+
+
