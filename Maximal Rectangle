@@ -46,3 +46,63 @@ public class Solution {
         return max;
     }
 }
+
+
+
+// O(n^3)
+
+public class Solution {
+    public int maximalRectangle(char[][] matrix) {
+        if(matrix == null || matrix.length == 0){
+            return 0;
+        }
+        int[][] record = new int[matrix.length][matrix[0].length];
+        for(int i = 0; i < matrix.length; i++){
+            for(int j = 0; j < matrix[0].length; j++){
+                if(matrix[i][j] == '1'){
+                    if(j == 0){
+                        record[i][j] = 1;
+                    }
+                    else{
+                        record[i][j] = record[i][j-1] + 1;
+                    }
+                }
+            }
+        }
+        int max = 0;
+        for(int i = 0; i < record.length; i++){
+            for(int j = 0; j < record[i].length; j++){
+                max = Math.max(max, findMax(record, i, j));
+            }
+        }
+        return max;
+    }
+    
+    private int findMax(int[][] record, int i, int j){
+        int up = i, down = i;
+        int downResult = i;
+        int upResult = i;
+        int length = record[i][j];
+        while( up >= 0){
+            if(record[up][j] >= length){
+                upResult = up;
+                up--;
+            }
+            else{
+                break;
+            }
+        }
+        while(down < record.length){
+            if(record[down][j] >= length){
+                downResult = down;
+                down++;
+            }
+            else{
+                break;
+            }
+        }
+        int width = downResult - upResult + 1;
+        return length*width;
+        
+    }
+}
