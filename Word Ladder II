@@ -11,7 +11,7 @@
   dict = ["hot","dot","dog","lot","log"]
 */
 
-//     each level, temQueue must be a set, cuz some words may reach the same word at the next level
+//     for each level, temQueue must be a set, cuz some words may reach the same word at the next level
 //     for the same reason, the visited set can only be updated once we processed all words at the same level
 //     backtracking to build the Solution
 public class Solution {
