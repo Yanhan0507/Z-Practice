@@ -1,0 +1,102 @@
+/*
+  Given two words (start and end), and a dictionary, find all shortest transformation sequence(s) from start to end, such that:
+  
+  Only one letter can be changed at a time
+  Each intermediate word must exist in the dictionary
+  For example,
+  
+  Given:
+  start = "hit"
+  end = "cog"
+  dict = ["hot","dot","dog","lot","log"]
+*/
+public class Solution {
+    public List<List<String>> findLadders(String start, String end, Set<String> dict) {
+        List<List<String>> result = new ArrayList<List<String>>();
+        Queue<String> queue = new LinkedList<String>();
+        if(start == null || end == null || dict.size() == 0){
+            return result;
+        }
+        queue.add(start);
+        Map<String, List<String>> predecessor = new HashMap<String, List<String>>();
+        predecessor.put(start, new ArrayList<String>());
+        Set<String> visited = new HashSet<String>();
+        visited.add(start);
+        boolean isEnd = false;
+        if(start.equals(end)){
+            isEnd = true;
+        }
+       
+        
+        while( !queue.isEmpty() ){
+            if(isEnd){
+                break;
+            }
+            Set<String> tmpQueue = new HashSet<String>();
+            Set<String> tmpVisited = new HashSet<String>();
+            while(!queue.isEmpty()){
+                String item = queue.poll();
+                List<String> neighbors = findNeighbors(item, dict, visited);
+                for(String str: neighbors){
+                    if(str.equals(end)){
+                        isEnd = true;
+                    }
+                    if(!predecessor.containsKey(str)){
+                        List<String> tmpList = new ArrayList<String>();
+                        tmpList.add(item);
+                        predecessor.put(str, tmpList);
+                    }
+                    else{
+                        predecessor.get(str).add(item);
+                    }
+                    tmpQueue.add(str);
+                    tmpVisited.add(str);
+                }
+            }
+            queue.addAll(tmpQueue);
+            visited.addAll(tmpVisited);
+        }
+        List<String> path = new ArrayList<String>();
+        path.add(end);
+        if(predecessor.containsKey(end)){
+            buildSolution(predecessor, result, path);
+        }
+        return result;
+        
+    }
+    private List<String> findNeighbors(String item, Set<String> dict, Set<String> visited){
+        List<String> result = new ArrayList<String>();
+        char[] array = item.toCharArray();
+        for(int i = 0; i < item.length(); i++){
+            char ch = 'a';
+            char oldCh = array[i];
+            for(int k = 0; k < 26; k++){
+                char newCh = (char)(ch + k);
+                array[i] = newCh;
+                String newStr = new String(array);
+                if(!visited.contains(newStr) && dict.contains(newStr)){
+                    result.add(newStr);
+                }
+            }
+            array[i] = oldCh;
+        }
+
+        return result;
+    }
+    
+    private void buildSolution(Map<String, List<String>> predecessor, List<List<String>> result, List<String> path){
+        String cur = path.get(path.size() - 1);
+        List<String> edges = predecessor.get(cur);
+        if(edges.size() == 0){
+            List<String> onePath = new ArrayList<String>(path);
+            Collections.reverse(onePath);
+            result.add(onePath);
+        }
+        for(String edge: edges){
+            path.add(edge);
+            buildSolution(predecessor, result, path);
+            path.remove(path.size() - 1);
+        }
+    }
+    
+}
