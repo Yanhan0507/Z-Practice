@@ -50,7 +50,7 @@ public class Solution {
 }
 
 
-//
+//  先确定递增序列，然后判断该数是否属于递增序列，不属于进入另一段，属于，留在这一段，over and over again
 
 
 public class Solution {
