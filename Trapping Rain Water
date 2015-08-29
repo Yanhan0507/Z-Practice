@@ -1,0 +1,44 @@
+/*
+Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.
+
+For example, 
+Given [0,1,0,2,1,0,1,3,2,1,2,1], return 6.
+*/
+
+// For each point, fint the maximal left value and maximal right value, and get the minimal value of both, and then compare
+// it to its current value
+
+public class Solution {
+    public int trap(int[] height) {
+        if(height == null || height.length == 0){
+            return 0;
+        }
+        int[] right = new int[height.length];
+        int sum = 0;
+        right[0] = 0;
+        int max = height[0];
+        for(int i = 1; i < right.length; i++){
+            right[i] = max;
+            if(height[i] > max){
+                max = height[i];
+            }
+        }
+        int[] left = new int[height.length];
+        left[height.length - 1] = 0;
+        max = height[height.length - 1];
+        for(int i = left.length - 2; i >= 0; i--){
+            left[i] = max;
+            if(height[i] > max){
+                max = height[i];
+            }
+        }
+        
+        for(int i = 0; i < height.length; i++){
+            int cur = Math.min(right[i], left[i]) - height[i];
+            if(cur > 0){
+                sum += cur;
+            }
+        }
+        return sum;
+    }
+}
