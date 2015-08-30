@@ -28,7 +28,7 @@ public class Solution {
         }
         return cur;
     }
-	// wrong solution: divide and conquer: O(nlogn)
+	//solution: divide and conquer: O(nlogn)
     public int majorityElement1(int[] nums) {
         return majorityElement1(nums, 0, nums.length - 1);
     }
