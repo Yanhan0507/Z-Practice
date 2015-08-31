@@ -42,3 +42,29 @@ public class Solution {
         return sum;
     }
 }
+
+// stack solution, O(n) time complexity and O(n) space
+
+public class Solution {
+    public int trap(int[] height) {
+        Stack<Integer> stack = new Stack<Integer>();
+        int i = 0;
+        int value = 0;
+        while(i < height.length){
+            if(stack.isEmpty() || height[i] <= height[stack.peek()]){
+                stack.push(i);
+                i++;
+            }
+            else{
+                int cur = stack.pop();
+                if(stack.empty()){
+                    continue;
+                }
+                int tmp = stack.peek();
+                int hei = Math.min(height[tmp], height[i]) - height[cur];
+                value += hei*(i - 1 - tmp);
+            }
+        }
+        return value;
+    }
+}
