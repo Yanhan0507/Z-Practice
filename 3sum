@@ -39,3 +39,47 @@ public class Solution {
         return new ArrayList<List<Integer>>(set);
     }
 }
+
+
+public class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if(nums == null || nums.length == 0){
+            return result;
+        }
+        Arrays.sort(nums);
+        int i = 0;
+        while(i < nums.length){
+            int start = i + 1;
+            int end = nums.length - 1;
+            while(start < end){
+                int sum = nums[i] + nums[end] + nums[start];
+                if( sum < 0){
+                    start++;
+                }
+                else if(sum > 0){
+                    end--;
+                }
+                else{
+                    List<Integer> tmp = new ArrayList<Integer>();
+                    tmp.add(nums[i]);
+                    tmp.add(nums[start]);
+                    tmp.add(nums[end]);
+                    result.add(tmp);
+                    start++;
+                    end--;
+                    while(start < end && nums[start] == nums[start-1] && nums[end] == nums[end+1]){
+                        start++;
+                        end--;
+                    }
+                }
+            }
+            i++;
+            while(i < nums.length && nums[i] == nums[i-1]){
+                i++;
+            }
+            
+        }
+        return result;
+    }
+}
