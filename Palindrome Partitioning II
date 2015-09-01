@@ -1,0 +1,88 @@
+// control the distance, M[i,j] = M[i+1, j-1] && s.charAt(i) == s.charAt(j)
+public class Solution {
+    public int minCut(String s) {
+        boolean[][] M = new boolean[s.length()][s.length()];
+        
+        for(int dis = 0; dis<s.length(); dis++){
+            for(int i = 0; i + dis < s.length();i++){
+                int j = i + dis;
+                if(dis == 0){
+                    M[i][j] = true;
+                }
+                else if(dis == 1){
+                    M[i][j] = s.charAt(i) == s.charAt(j);
+                }
+                else{
+                    M[i][j] = s.charAt(i) == s.charAt(j) && M[i+1][j-1];
+                }
+            }
+        }
+        
+        int[] result = new int[s.length()];
+        for(int i = 0; i < result.length; i++){
+            result[i] = -1;
+        }
+        return DFS(result, result.length - 1, M);
+    }
+    
+    private int DFS(int[] result, int level, boolean[][] M){
+        if(level == -1){
+            return -1;
+        }
+        if(result[level] != -1){
+            return result[level];
+        }
+        int min = Integer.MAX_VALUE;
+        for(int i = 0; i <= level; i++){
+            if(M[i][level]){
+                min = Math.min(DFS(result, i-1, M) + 1, min);
+            }
+        }
+        result[level] = min;
+        return min;
+    }
+
+}
+
+//  O(n^3) TLE solution 
+public class Solution {
+    public int minCut(String s) {
+        boolean[][] M = new boolean[s.length()][s.length()];
+        for(int i = 0; i < s.length(); i++){
+            for(int j = i; j < s.length(); j++){
+                M[i][j] = isPalindrome(i, j, s);
+            }
+        }
+        int[] result = new int[s.length()];
+        for(int i = 0; i < result.length; i++){
+            result[i] = -1;
+        }
+        return DFS(result, result.length - 1, M);
+    }
+    
+    private int DFS(int[] result, int level, boolean[][] M){
+        if(level == -1){
+            return -1;
+        }
+        if(result[level] != -1){
+            return result[level];
+        }
+        int min = Integer.MAX_VALUE;
+        for(int i = 0; i <= level; i++){
+            if(M[i][level]){
+                min = Math.min(DFS(result, i-1, M) + 1, min);
+            }
+        }
+        result[level] = min;
+        return min;
+    }
+    
+    private boolean isPalindrome(int start, int end, String s){
+        while(start < end){
+            if(s.charAt(start++) != s.charAt(end--)){
+                return false;
+            }
+        }
+        return true;
+    }
+}
