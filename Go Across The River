@@ -1,0 +1,93 @@
+// Given a array, R ( e.g. = [1, 1, 0, 0]) 0 is water, 1 stands for ground
+// we start from position 0, and speed 1, each time we can keep current speed or increase speed by 1
+// and for each step, we can only stop at position whose value is 1(ground)
+// find the minimal steps we can across this river
+// R = [1,1,1,0,1,1,0,0] at position 0, speed is 1, for the first step, we increase speed by 1, so we reach 2,
+// then we increase the speed by 1, we reach 5, and keep this speed or increase by 1, we across the river successfully
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Solution {
+    public int solver(int[] river){
+    	int[][] M = new int[river.length + 1][river.length + 2];
+    	for(int i = 0; i < M.length; i++){
+    		for(int j = 0; j < M[i].length; j++){
+    			M[i][j] = -1;
+    		}
+    	}
+    	M[0][1] = 0;
+    	for(int i = 0; i < river.length; i++){
+    		if(river[i] == 0){
+    			continue;
+    		}
+    		for(int j = 0; j < M[i].length; j++){
+    			if(M[i][j] == -1){
+    				continue;
+    			}
+    			int pos1 = i + j >= river.length? river.length: i + j;
+    			int pos2 = i + j + 1>= river.length? river.length: i + j + 1;
+    			if(M[pos1][j] == -1){
+    				M[pos1][j] = M[i][j] + 1;
+    			}
+    			else{
+    				M[pos1][j] = Math.min(M[pos1][j], M[i][j] + 1);
+    			}
+    			if(M[pos2][j + 1] == -1){
+    				M[pos2][j + 1] = M[i][j] + 1;
+    			}
+    			else{
+    				M[pos2][j + 1] = Math.min(M[pos2][j], M[i][j] + 1);
+    			}
+    		}
+    	}
+    	
+    	int min = Integer.MAX_VALUE;
+    	int speed = 0;
+    	for(int i = 0; i < M[0].length; i++){
+    		if(M[M.length - 1][i] != -1){
+    			if(min > M[M.length - 1][i]){
+    				speed = i;               //  for the same step, we use the one with minimal speed, cuz sometimes, the i+j+1>length
+    				min = M[M.length - 1][i];
+    			}
+    		}
+    	}
+    	List<Integer> path = new ArrayList<Integer>();
+    	buildSolution(M, M.length - 1, speed, path);
+    	Collections.reverse(path);
+    	System.out.println(path);
+    	return min;
+    }
+    
+    private void buildSolution(int[][] M, int pos, int speed, List<Integer> path){
+    	if(pos == 0){
+    		return;
+    	}
+    	if(M[pos-speed][speed] == -1){
+    		path.add(speed - 1);
+    		buildSolution(M, pos - speed, speed - 1, path);
+    		return;
+    	}
+    	if(M[pos-speed][speed-1] == -1){
+    		path.add(speed);
+    		buildSolution(M, pos - speed, speed, path);
+    		return;
+    	}
+    	if(M[pos - speed][speed] < M[pos - speed][speed - 1]){
+    		path.add(speed);
+    		buildSolution(M, pos - speed, speed, path);
+    	}
+    	else{
+    		path.add(speed - 1);
+    		buildSolution(M, pos - speed, speed - 1, path);
+    	}
+    }
+    
+
+    
+    public static void main(String[] args){
+    	Solution s = new Solution();
+    	System.out.println(s.solver(new int[]{1, 1, 1, 0, 1, 1, 0, 0}));
+    }
+}
