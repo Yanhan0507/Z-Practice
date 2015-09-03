@@ -1,0 +1,29 @@
+/*
+  Implement pow(x, n).
+*/
+
+// remember that n could be negative number.
+
+public class Solution {
+    public double myPow(double x, int n) {
+        double result = dac(x,n);
+        if(n >= 0){
+            return result;
+        }
+        return 1/result;
+    }
+    
+    private double dac(double num, int times){
+        if(times == 0){
+            return 1;
+        }
+        if(times == 1){
+            return num;
+        }
+        double a = dac(num, times/2);
+        if(times % 2 == 0){
+            return a*a;
+        }
+        return a*a*num;
+    }
+}
