@@ -1,0 +1,85 @@
+/*
+  Convert a non-negative integer to its english words representation. Given input is guaranteed to be less than 231 - 1.
+  
+  For example,
+  123 -> "One Hundred Twenty Three"
+  12345 -> "Twelve Thousand Three Hundred Forty Five"
+  1234567 -> "One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven"
+*/
+
+// The ugliest code I ever wrote, not just one of them... 
+public class Solution {
+    public String numberToWords(int num) {
+        if(num == 0){
+            return "Zero";
+        }
+        String str = "" + num;
+        String M[] = {"", "Thousand", "Million", "Billion"};
+        StringBuilder result = new StringBuilder();
+        int counter = 0;
+        String space = "";
+        for(int i = str.length(); i > 0 ; i -= 3){
+            int end = i;
+            int start = Math.max(0, i-3);
+            String cur = helper(str.substring(start, end));
+            if(cur.length() == 0){
+                counter++;
+                continue;
+            }
+            String str1 = "";
+            if(M[counter].length() != 0){
+                str1 = " ";
+            }
+            cur = cur + str1 + M[counter++] + space;
+            space = " ";
+            result.insert(0, cur);
+        }
+        return result.toString();
+    }
+    
+    private String helper(String num){
+        String[] M = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"};
+        String[] T = {"Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+        String[] D = {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+        int curInt = Integer.valueOf(num);
+        int part1 = curInt / 100;
+        int part2 = curInt % 100;
+        StringBuilder str1 = new StringBuilder();
+        StringBuilder str2 = new StringBuilder();
+        str1.append(M[part1]);
+        if(part1 != 0){
+            str1.append(" ").append("Hundred");
+        }
+        if(part2 >= 10 && part2 <= 19){
+            str2.append(T[part2 - 10]);
+        }
+        else{
+            int digit1 = part2 / 10;
+            int digit2 = part2 % 10;
+            if(digit1 == 0){
+                str2.append(D[digit1]).append(M[digit2]);
+            }
+            else{
+                if(digit2 == 0){
+                    str2.append(D[digit1]).append(M[digit2]);
+                }
+                else{
+                    str2.append(D[digit1]).append(" ").append(M[digit2]);
+                }
+            }
+            
+        }
+        if(str1.length() == 0){
+            return str1.append(str2.toString()).toString();
+        }
+        else{
+            if(str2.length() == 0){
+                return str1.toString();   
+            }
+            else{
+                return str1.append(" ").append(str2.toString()).toString();
+            }
+        }
+         
+    }
+}
