@@ -3,6 +3,51 @@
   
   If it is overflow, return MAX_INT.
 */
+
+// very hard to bug free
+public class Solution {
+    public int divide(int dividend, int divisor) {
+        if(divisor == 0){
+            return Integer.MAX_VALUE;
+        }
+        boolean negative = dividend<0 ^ divisor<0;
+        long num1 = Math.abs((long)dividend);  // put (long) before dividend
+        long num2 = Math.abs((long)divisor);
+        long cur = num2;
+        int i = 0;
+        while(true){
+            if(num1 >= cur){
+                cur = cur << 1;
+                i++;
+                continue;
+            }
+            break;
+        }
+        i--;
+        long result = 0;
+        while(i >= 0){
+            long tmp = num2<<i;
+            if(tmp > num1){
+                i--;
+            }
+            else{
+                num1 -= tmp;
+                result += (long)1<<i;
+            }
+        }
+        if(negative){
+            if(result - 1 > Integer.MAX_VALUE){
+                return Integer.MAX_VALUE;
+            }
+            return (int)(-1*result);
+        }
+        return result > Integer.MAX_VALUE? Integer.MAX_VALUE: (int)result;
+       
+    }
+}
+
+// using an array to record the result of first traversal
+
 public class Solution {
     public int divide(int dividend, int divisor) {
         if(divisor == 0){
