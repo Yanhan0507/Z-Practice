@@ -1,0 +1,40 @@
+/*
+  Say you have an array for which the ith element is the price of a given stock on day i.
+  
+  Design an algorithm to find the maximum profit. You may complete at most k transactions.
+  
+  Note:
+  You may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).
+  
+  Credits:
+  Special thanks to @Freezen for adding this problem and creating all test cases.
+*/
+
+public class Solution {
+    public int maxProfit(int k, int[] prices) {
+        if(prices == null || prices.length == 0){
+            return 0;
+        }
+        int length = prices.length;
+        if(k > length/2){
+            return helper(prices);
+        }
+        int[][] result = new int[k+1][length];
+        for(int i = 1; i <= k; i++){
+            int tmp = - prices[0];
+            for(int j = 1; j < prices.length; j++){
+                result[i][j] = Math.max(result[i][j-1], prices[j] + tmp);
+                tmp = Math.max(result[i-1][j-1] - prices[j], tmp);
+            }
+        }
+        return result[k][length - 1];
+    }
+    
+    private int helper(int[] prices){
+        int sum = 0;
+        for(int i = 1; i < prices.length; i++){
+            sum += Math.max(0, prices[i] - prices[i-1]);
+        }
+        return sum;
+    }
+}
