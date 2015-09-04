@@ -1,0 +1,29 @@
+public class Solution {
+    public int maxSubArray(int[] nums) {
+        return helper(nums, 0, nums.length - 1);
+    }
+    
+    private int helper(int[] nums, int start, int end){
+        if(start > end){
+            return Integer.MIN_VALUE;
+        }
+        if(start == end){
+            return nums[start];
+        }
+        int mid = (start + end)/2;
+        int left = helper(nums, start, mid);
+        int right = helper(nums, mid + 1, end);
+        int lefthalf = Integer.MIN_VALUE, righthalf = Integer.MIN_VALUE;
+        int tmpLeft = 0, tmpRight = 0;
+        for(int i = mid; i >= start; i--){
+            tmpLeft += nums[i];
+            lefthalf = Math.max(lefthalf, tmpLeft);
+        }
+        for(int i = mid + 1; i <= end; i++){
+            tmpRight += nums[i];
+            righthalf = Math.max(righthalf, tmpRight);
+        }
+        return Math.max(lefthalf+righthalf, Math.max(left, right));
+        
+    }
+}
