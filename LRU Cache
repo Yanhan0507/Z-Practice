@@ -1,0 +1,79 @@
+/*
+Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations: get and set.
+
+get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.
+set(key, value) - Set or insert the value if the key is not already present. When the cache reached its capacity, it should invalidate the least recently used item before inserting a new item.
+*/
+public class LRUCache {
+    Map<Integer, Node> map;
+    Node head;
+    int capacity;
+    public LRUCache(int capacity) {
+        map = new HashMap<Integer, Node>(capacity);
+        head = new Node(-1, -1);
+        head.next = head;
+        head.prev = head;
+        this.capacity = capacity;
+    }
+    
+    public int get(int key) {
+        if(map.containsKey(key)){
+            Node node = map.get(key);
+            node.prev.next = node.next;
+            node.next.prev = node.prev;
+            node.next = head.next;
+            node.prev = head;
+            head.next = node;
+            node.next.prev = node;
+            return node.value;
+        }
+        else{
+            return -1;
+        }
+    }
+    
+    public void set(int key, int value) {
+        if(get(key) != -1){
+           Node node = map.get(key);
+           node.value = value;
+           node.prev.next = node.next;
+           node.next.prev = node.prev;
+           node.next = head.next;
+           node.prev = head;
+           head.next = node;
+           node.next.prev = node;
+        }
+        else{
+            if(map.size() == capacity){
+                Node node1 = head.prev;
+                Node node2 = node1.prev;
+                node2.next = head;
+                head.prev = node2;
+                node1.next = null;
+                node1.prev = null;
+                map.remove(node1.key);
+            }
+            Node node = new Node(key, value);
+            node.next = head.next;
+            node.prev = head;
+            head.next = node;
+            node.next.prev = node;
+            
+            map.put(key, node);
+        }
+    }
+    
+    class Node{
+        int value = 0;
+        int key = 0;
+        Node next = null;
+        Node prev = null;
+        public Node(){}
+        public Node(int key, int value){
+            this.key = key;
+            this.value = value;
+        }
+    }
+    
+    
+}
