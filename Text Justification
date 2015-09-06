@@ -1,0 +1,80 @@
+/*
+Given an array of words and a length L, format the text such that each line has exactly L characters and is fully (left and right) justified.
+
+You should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces ' ' when necessary so that each line has exactly L characters.
+
+Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line do not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right.
+
+For the last line of text, it should be left justified and no extra space is inserted between words.
+
+For example,
+words: ["This", "is", "an", "example", "of", "text", "justification."]
+L: 16.
+
+Return the formatted lines as:
+[
+   "This    is    an",
+   "example  of text",
+   "justification.  "
+]
+Note: Each word is guaranteed not to exceed L in length.
+*/
+public class Solution {
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        List<String> result = new ArrayList<String>();
+        List<String> path = new ArrayList<String>();
+        int len = -1;
+        int i = 0;
+        while(i < words.length){
+            String str = words[i];
+            int curlen = str.length();
+            if(curlen + len + 1 > maxWidth){
+                result.add(helper(path, maxWidth, false));
+                path.clear();
+                len = -1;
+            }
+            else{
+                path.add(str);
+                len += curlen + 1;
+                i++;
+            }
+        }
+        result.add(helper(path, maxWidth, true));
+        return result;
+    }
+    
+    private String helper(List<String> path, int maxWidth, boolean last){
+        int length = 0;
+        for(String str: path){
+            length += str.length();
+        }
+        int space = maxWidth - path.get(0).length();
+        int extraSpace = 0;
+        if(path.size() != 1){
+            space = (maxWidth - length)/(path.size() - 1);
+            extraSpace = (maxWidth - length)%(path.size() - 1);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append(path.get(0));
+        if(last){
+            space = 1;
+            extraSpace = 0;
+        }
+        
+        for(int i = 1; i < path.size(); i++){
+            int counter = i > extraSpace? space: space+1;
+            int k = 0;
+            while(k < counter){
+                k++;
+                sb.append(" ");
+            }
+            sb.append(path.get(i));
+        }
+        while(sb.length() < maxWidth){
+            sb.append(" ");
+        }
+        return sb.toString();
+    }
+}
