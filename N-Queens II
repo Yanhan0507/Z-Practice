@@ -1,0 +1,48 @@
+/*
+  Follow up for N-Queens problem.
+  
+  Now, instead outputting board configurations, return the total number of distinct solutions.
+*/
+public class Solution {
+    public int totalNQueens(int n) {
+        int[] result = new int[1];
+        helper(new ArrayList<Integer>(), n, result);
+        return result[0];
+    }
+    
+    private void helper(List<Integer> path, int n, int[] counter){
+        if(path.size() == n){
+            counter[0] += 1;
+            return; 
+        }
+        for(int i = 0; i < n; i++){
+            path.add(i);
+            if(isValid(path)){
+                helper(path, n, counter);
+            }
+            path.remove(path.size() - 1);
+        }
+    }
+    private boolean isValid(List<Integer> path){
+        
+        Set<Integer> set = new HashSet<Integer>();
+        
+        for(int i = 0; i < path.size(); i++){
+            int x1 = i;
+            int y1 = path.get(i);
+            if(!set.add(y1)){
+                return false;
+            }
+            for(int j = i + 1; j < path.size(); j++){
+                int x2 = j;
+                int y2 = path.get(j);
+                int difX = Math.abs(x1 - x2);
+                int difY = Math.abs(y1 - y2);
+                if(difX == difY){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
