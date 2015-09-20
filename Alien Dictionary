@@ -1,0 +1,242 @@
+/*
+There is a new alien language which uses the latin alphabet. However, the order among letters are unknown to you. You receive a list of words from the dictionary, where words are sorted lexicographically by the rules of this new language. Derive the order of letters in this language.
+
+For example,
+Given the following words in dictionary,
+
+[
+  "wrt",
+  "wrf",
+  "er",
+  "ett",
+  "rftt"
+]
+The correct order is: "wertf".
+
+Note:
+You may assume all letters are in lowercase.
+If the order is invalid, return an empty string.
+There may be multiple valid order of letters, return any one of them is fine.
+*/
+
+
+Solution 1: topological sort
+
+public class Solution {
+    public String alienOrder(String[] words) {
+        if(words == null || words.length <= 1){
+            return words[0];
+        }
+        Map<Character, Set<Character>> edges = new HashMap<Character, Set<Character>>();
+        Set<Character> nodes = new HashSet<Character>();
+        Map<Character, Boolean> marked = new HashMap<Character, Boolean>();
+        Map<Character, Boolean> visited = new HashMap<Character, Boolean>();
+        buildGraph(edges, nodes, words);
+        StringBuilder result = new StringBuilder();
+        for(char c: nodes){
+            marked.put(c, false);
+            visited.put(c, false);
+        }
+        for(char c: nodes){
+            if (!getResult(edges, marked, visited, c, result)){
+                return "";
+            }
+        }
+        
+        return result.reverse().toString();
+    }
+    
+    private boolean getResult(Map<Character, Set<Character>> edges, Map<Character, Boolean> marked, 
+        Map<Character, Boolean> visited, char c, StringBuilder result){
+        if(visited.get(c) == true){
+            return false;
+        }
+        if(marked.get(c) == true){
+            return true;
+        }
+        marked.put(c, true);
+        visited.put(c, true);
+        if(edges.containsKey(c)){
+            for(char child: edges.get(c)){
+                if(!getResult(edges, marked, visited, child, result)){
+                    return false;
+                }
+            }
+        }
+        result.append(c);
+        visited.put(c, false);
+        return true;
+    }
+    
+    private void buildGraph(Map<Character, Set<Character>> edges, Set<Character> nodes, String[] words){
+        for(int i = 1; i < words.length; i++){
+            int j = 0;
+            while(j < words[i-1].length() && j < words[i].length()){
+                char ch1 = words[i-1].charAt(j);
+                char ch2 = words[i].charAt(j);
+                nodes.add(ch1);
+                nodes.add(ch2);
+                if(ch1 == ch2){
+                    j++;
+                }
+                else{
+                    if(edges.containsKey(ch1)){
+                        edges.get(ch1).add(ch2);
+                    }
+                    else{
+                        Set<Character> newSet = new HashSet<Character>();
+                        newSet.add(ch2);
+                        edges.put(ch1, newSet);
+                    }
+                    break;
+                }
+            }
+            int m = j;
+            int n = j;
+            while(m < words[i-1].length()){
+                nodes.add(words[i-1].charAt(m));
+                m++;
+            }
+            while(n < words[i].length()){
+                nodes.add(words[i].charAt(n));
+                n++;
+            }
+        }
+    }
+}
+
+
+Solution2: treat it as a graph, start from ancestors of each subgraph, and then classify each node by level
+
+public class Solution {
+    public String alienOrder(String[] words) {
+        StringBuilder sb = new StringBuilder();
+        List<String> relation = new ArrayList<String>();
+        Set<Character> nodes = new HashSet<Character>();
+        getNodes(nodes, words);
+        preprocess(words, relation);
+        if(relation.size() == 0){
+            for(char node: nodes){
+                if(sb.indexOf(node + "") == -1){
+                    sb.append(node);
+                }
+            }
+            return sb.toString();
+        }
+        Map<Character, List<Character>> map = new HashMap<Character, List<Character>>();
+        Map<Character, Boolean> isAncestor = new HashMap<Character, Boolean>();
+        buildGraph(relation, map, isAncestor);
+        Set<Character> ancestor = isAncestor.keySet();
+        boolean found = false;
+         for(char ch: map.keySet()){
+            found = true;
+            if(findCycle(ch, map, new HashSet<Character>())){
+                return "";
+            }
+        }
+        if(!found){
+            return "";
+        }
+        Map<Integer, List<Character>> result = new HashMap<Integer, List<Character>>();
+        for(char ch: ancestor){
+            if(isAncestor.get(ch)){
+                buildSolution(ch, map, result, 0);
+            }
+        }
+        int length = result.keySet().size();
+        for(int i = 0; i < length; i++){
+        	List<Character> tmpList = result.get(i);
+        	for(char ch: tmpList){
+        		sb.append(ch);
+        	}
+        }
+        for(char node: nodes){
+            if(sb.indexOf(node + "") == -1){
+                sb.append(node);
+            }
+        }
+        return sb.toString();
+    }
+    
+    private void buildSolution(char parent, Map<Character, List<Character>> map, 
+    	Map<Integer, List<Character>> result, int level){
+        if(result.containsKey(level)){
+        	result.get(level).add(parent);
+        }
+        else{
+        	List<Character> newList = new ArrayList<Character>();
+        	newList.add(parent);
+        	result.put(level, newList);
+        }
+        
+        if(!map.containsKey(parent)){
+            return;
+        }
+        List<Character> children = map.get(parent);
+        for(char child: children){
+            buildSolution(child, map, result, level+1);
+        }
+    }
+    
+    private boolean findCycle(char ch, Map<Character, List<Character>> map, Set<Character> visited){
+        if(!visited.add(ch)){
+            return true;
+        }
+        if(!map.containsKey(ch)){
+            visited.remove(ch);
+            return false;
+        }
+        List<Character> list = map.get(ch);
+        for(char child: list){
+            if(findCycle(child, map, visited)){
+                visited.remove(ch);
+                return true;
+            }
+        }
+        visited.remove(ch);
+        return false;
+    }
+    
+    private void buildGraph(List<String> relation, Map<Character, List<Character>> map, Map<Character, Boolean> isAncestor){
+        for(String str: relation){
+            char parent = str.charAt(0);
+            char child = str.charAt(1);
+            if(map.containsKey(parent)){
+                map.get(parent).add(child);
+            }
+            else{
+                List<Character> newList = new ArrayList<Character>();
+                newList.add(child);
+                map.put(parent, newList);
+            }
+            if(!isAncestor.containsKey(parent)){
+                isAncestor.put(parent, true);
+            }
+            isAncestor.put(child, false);
+        }
+    }
+    
+    private void preprocess(String[] words, List<String> result){
+        for(int i = 0; i < words.length - 1; i++){
+            String str1 = words[i];
+            String str2 = words[i+1];
+            int k = 0;
+            while(k < str1.length() && k < str2.length()){
+                if(str1.charAt(k) == str2.charAt(k)){
+                    k++;
+                    continue;
+                }
+                result.add("" + str1.charAt(k) + str2.charAt(k));
+                break;
+            }
+        }
+    }
+    
+    private void getNodes(Set<Character> nodes, String[] words){
+        for(String str: words){
+            for(int i = 0; i < str.length(); i++){
+                nodes.add(str.charAt(i));
+            }
+        }
+    }
+}
