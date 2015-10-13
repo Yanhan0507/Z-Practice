@@ -4,6 +4,11 @@
     For example,
     [1,1,2] have the following unique permutations:
     [1,1,2], [1,2,1], and [2,1,1].
+    
+    
+    00019
+    -> 90010
+    -> 90010, 91000, 90010
 */
 // used a set at every time
 public class Solution {
