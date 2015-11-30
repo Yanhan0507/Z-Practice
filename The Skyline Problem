@@ -22,56 +22,49 @@ There must be no consecutive horizontal lines of equal height in the output skyl
 
 public class Solution {
     public List<int[]> getSkyline(int[][] buildings) {
-       List<int[]> result = new ArrayList<int[]>();
-       if(buildings == null || buildings.length == 0){
-           return result;
-       }
-       List<int[]> height = new ArrayList<int[]>();
-       for(int i = 0; i < buildings.length; i++){
-           int[] tmp1 = new int[2];
-           int[] tmp2 = new int[2];
-           tmp1[0] = buildings[i][0];
-           tmp1[1] = -1 * buildings[i][2];
-           tmp2[0] = buildings[i][1];
-           tmp2[1] = buildings[i][2];
-           height.add(tmp1);
-           height.add(tmp2);
-       }
-       Collections.sort(height, new Comparator<int[]>(){
-           public int compare(int[] I1, int[] I2){
-                if(I1[0] > I2[0]){
-                    return 1;
-                }   
-                else if(I1[0] < I2[0]){
-                    return -1;
+        Comparator<int[]> comp = new Comparator<int[]>(){
+            public int compare(int[] i1, int[] i2){
+                if(i1[0] == i2[0]){
+                    return i2[1] - i1[1];
                 }
                 else{
-                    if(I1[1] == I2[1]){
-                        return 0;
-                    }
-                    return I1[1] > I2[1]? 1:-1;
+                    return i1[0] - i2[0];
                 }
-           }
-       });
-       // negative left, positive right
-       int processing = 0;
-       PriorityQueue<Integer> pq = new PriorityQueue<Integer>(10, Collections.reverseOrder());
-       for(int i = 0; i < height.size(); i++){
-           int[] tmp = height.get(i);
-           int curIndex = tmp[0];
-           if(tmp[1] < 0){
-                pq.add(tmp[1]*-1);
-           }
-           else{
-                pq.remove(tmp[1]);
-           }
-           int curHeight = pq.isEmpty()?0:pq.peek();
-           if(processing != curHeight){
-               int[] cur = {curIndex, curHeight};
-               result.add(cur);
-               processing = curHeight;
-           }
-       }
-       return result;
+            }    
+        };
+        
+        List<int[]> list = new ArrayList<int[]>();
+        for(int i = 0; i < buildings.length; i++){
+            int[] arr1 = new int[]{buildings[i][0], buildings[i][2]};
+            int[] arr2 = new int[]{buildings[i][1], -1 * buildings[i][2]};
+            list.add(arr1);
+            list.add(arr2);
+        }
+        Collections.sort(list, comp);
+        
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>(10, Collections.reverseOrder());
+        
+        int cur = -1;
+        
+        List<int[]> ret = new ArrayList<int[]>();
+        
+        for(int i = 0; i < list.size(); i++){
+            int[] arr = list.get(i);
+            if(arr[1] < 0){
+                pq.remove(arr[1] * -1);
+            }
+            else{
+                pq.add(arr[1]);
+            }
+            if(pq.size() == 0){
+                ret.add(new int[]{arr[0], 0});
+                cur = 0;
+            }
+            else if(pq.peek() != cur){
+                ret.add(new int[]{arr[0], pq.peek()});
+                cur = pq.peek();
+            }
+        }
+        return ret;
     }
 }
